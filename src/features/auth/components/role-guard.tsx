@@ -2,19 +2,16 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { readStoredSession, useAuth, type Role } from "@/lib/auth-context";
+import { useAuth } from "../model/auth-context";
+import { readStoredSession } from "../model/session-store";
+import { landingRouteFor } from "../model/accounts";
+import type { Role } from "../model/types";
 
 /**
- * Client-side only. There is no server session in this demo, so this keeps
- * the wrong role out of the wrong screen but is not a security boundary.
+ * Client-side only. There is no server session in this demo, so this keeps the
+ * wrong role out of the wrong screen but is not a security boundary.
  */
-export function RoleGuard({
-  role,
-  children,
-}: {
-  role: Role;
-  children: React.ReactNode;
-}) {
+export function RoleGuard({ role, children }: { role: Role; children: React.ReactNode }) {
   const router = useRouter();
   const { session } = useAuth();
 
@@ -23,7 +20,7 @@ export function RoleGuard({
     if (!current) {
       router.replace("/login");
     } else if (current.role !== role) {
-      router.replace(current.role === "admin" ? "/console" : "/shop");
+      router.replace(landingRouteFor(current.role));
     }
   }, [session, role, router]);
 

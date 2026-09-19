@@ -2,35 +2,13 @@
 
 import { useEffect, useRef, useState } from "react";
 import { ArrowUp, MessageSquare, X } from "lucide-react";
+import { OPENING_EXCHANGE, PLACEHOLDER_REPLY } from "../data/opening-exchange";
+import type { ChatMessage } from "../model/types";
 
-type Message = { id: string; role: "customer" | "assistant"; text: string };
-
-/**
- * STATIC. The opening exchange is a fixture so the chat can be judged before
- * the runtime exists. Anything typed is echoed and answered with a fixed
- * placeholder rather than a fake model reply, so the view never pretends to
- * be wired up.
- */
-const OPENING: Message[] = [
-  {
-    id: "m1",
-    role: "assistant",
-    text: "Hello Anna. I can look up your orders, sort out refunds, or buy things from your wallet. You have €50.00 to spend.",
-  },
-  { id: "m2", role: "customer", text: "Where is order ORD-100?" },
-  {
-    id: "m3",
-    role: "assistant",
-    text: "ORD-100 is in transit with DHL under DHL-ORD100-TEST. It cleared the Leipzig hub this morning and is due Thursday. That is the Ceramic Dinner Set, €64.80.",
-  },
-];
-
-const PLACEHOLDER_REPLY =
-  "The assistant runtime is not connected yet, so I cannot answer that. This session is still recorded, and the operator console shows how the reply would be built.";
 
 export function ChatDock() {
   const [open, setOpen] = useState(false);
-  const [messages, setMessages] = useState<Message[]>(OPENING);
+  const [messages, setMessages] = useState<ChatMessage[]>(OPENING_EXCHANGE);
   const [draft, setDraft] = useState("");
   const endRef = useRef<HTMLDivElement>(null);
 

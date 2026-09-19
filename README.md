@@ -55,14 +55,24 @@ The four fixture sessions are deliberately not all happy paths:
 - `SES-2b60` a purchase that cost more than the wallet held, narrowed to the
   affordable item and charged only after explicit confirmation.
 
+## Layout of the code
+
+Organised by feature, not by file type. See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
+for the full map and the rules about crossing feature boundaries.
+
+```
+src/app/        routes, thin
+src/features/   auth · catalog · wallet · assistant · sessions
+src/shared/     cross-feature primitives
+```
+
 ## Design
 
 Colour, type and the token structure follow
 [inboxed-web](https://github.com/IvailoManolov/inboxed-web): cream and coral,
 Bricolage Grotesque for display, Inter for UI, JetBrains Mono for machine
-content. The console inverts to an ink ground, so screen temperature tells you
-which role you are in before you read a word. Colour is reserved for status;
-mono is reserved for content a machine produced.
+content. One palette across both roles. Colour is reserved for status; mono is
+reserved for content a machine produced.
 
 ## Pre-commit guard
 

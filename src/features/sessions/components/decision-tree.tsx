@@ -13,16 +13,15 @@ import {
   Target,
   Wrench,
 } from "lucide-react";
-import type { DecisionNode, DecisionStatus, NodeKind } from "@/lib/sessions";
-import { STATUS_LABEL } from "@/lib/sessions";
+import { STATUS_LABEL, type DecisionNode, type DecisionStatus, type NodeKind } from "../model/types";
 
 /** Colour is reserved for status. Kind is carried by the icon alone. */
-const STATUS_STYLE: Record<DecisionStatus, { dot: string; text: string; ring: string }> = {
-  ok: { dot: "bg-green", text: "text-green", ring: "ring-green/30" },
-  hold: { dot: "bg-amber", text: "text-amber", ring: "ring-amber/35" },
-  blocked: { dot: "bg-danger", text: "text-danger", ring: "ring-danger/35" },
-  skipped: { dot: "bg-console-muted", text: "text-console-muted", ring: "ring-console-line" },
-  info: { dot: "bg-console-muted", text: "text-console-muted", ring: "ring-console-line" },
+const STATUS_STYLE: Record<DecisionStatus, { text: string; ring: string; chip: string }> = {
+  ok: { text: "text-green", ring: "ring-green/30", chip: "bg-green-soft" },
+  hold: { text: "text-amber", ring: "ring-amber-signal/45", chip: "bg-amber-soft" },
+  blocked: { text: "text-danger", ring: "ring-danger-signal/45", chip: "bg-danger-soft" },
+  skipped: { text: "text-muted", ring: "ring-line", chip: "bg-cream-deep" },
+  info: { text: "text-muted", ring: "ring-line", chip: "bg-cream-deep" },
 };
 
 const KIND_ICON: Record<NodeKind, typeof Target> = {
@@ -43,7 +42,7 @@ const STATUS_ICON: Record<DecisionStatus, typeof CircleCheck> = {
 
 function Payload({ data }: { data: Record<string, unknown> }) {
   return (
-    <pre className="console-scroll bg-console mt-2 max-w-full overflow-x-auto rounded-md px-3 py-2.5 font-mono text-[11px] leading-relaxed text-console-muted ring-1 ring-console-line">
+    <pre className="thin-scroll bg-sunk mt-2 max-w-full overflow-x-auto rounded-md px-3 py-2.5 font-mono text-[11px] leading-relaxed text-ink-soft ring-1 ring-sunk-line">
       {JSON.stringify(data, null, 2)}
     </pre>
   );
@@ -52,12 +51,10 @@ function Payload({ data }: { data: Record<string, unknown> }) {
 function Node({
   node,
   index,
-  depth,
   animate,
 }: {
   node: DecisionNode;
   index: number;
-  depth: number;
   animate: boolean;
 }) {
   const [open, setOpen] = useState(false);
@@ -76,14 +73,11 @@ function Node({
         {/* The spine: steps run in order, so the rail is load-bearing here.
             It runs the full height of the row behind the marker, which is the
             only way it stays unbroken between steps. */}
+        <span className="absolute top-0 bottom-0 left-3 w-px bg-line last-rail-hide" aria-hidden />
         <span
-          className="absolute top-0 bottom-0 left-3 w-px bg-console-line last-rail-hide"
-          aria-hidden
-        />
-        <span
-          className={`relative z-10 mt-1.5 flex size-6 shrink-0 items-center justify-center rounded-full bg-console-raised ring-1 ${style.ring}`}
+          className={`relative z-10 mt-1.5 flex size-6 shrink-0 items-center justify-center rounded-full ring-1 ${style.chip} ${style.ring}`}
         >
-          <KindIcon className={`size-3 ${muted ? "text-console-muted" : style.text}`} strokeWidth={2.2} />
+          <KindIcon className={`size-3 ${style.text}`} strokeWidth={2.2} />
         </span>
 
         <div className="min-w-0 grow pb-4">
@@ -95,34 +89,32 @@ function Node({
             className={`group block w-full text-left ${hasPayload ? "cursor-pointer" : "cursor-default"}`}
           >
             <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
-              <span className="font-mono text-[11px] text-console-muted tabular-nums">
+              <span className="font-mono text-[11px] text-muted tabular-nums">
                 {String(index + 1).padStart(2, "0")}
               </span>
-              <span
-                className={`text-sm font-semibold ${muted ? "text-console-muted" : "text-console-text"}`}
-              >
+              <span className={`text-sm font-semibold ${muted ? "text-muted" : "text-ink"}`}>
                 {node.label}
               </span>
               <span className={`inline-flex items-center gap-1 text-[11px] font-medium ${style.text}`}>
                 <StatusIcon className="size-3" strokeWidth={2.4} />
                 {STATUS_LABEL[node.status]}
               </span>
-              <span className="ml-auto font-mono text-[11px] text-console-muted tabular-nums">
+              <span className="ml-auto font-mono text-[11px] text-muted tabular-nums">
                 {node.ms >= 1000 ? `${(node.ms / 1000).toFixed(1)}s` : `${node.ms}ms`}
               </span>
             </div>
-            <p className="mt-0.5 pr-2 text-[13px] leading-snug text-console-muted">
-              {node.detail}
-            </p>
+            <p className="mt-0.5 pr-2 text-[13px] leading-snug text-ink-soft">{node.detail}</p>
             {hasPayload && (
-              <span className="mt-1 inline-flex items-center gap-1 text-[11px] text-console-muted transition-colors group-hover:text-coral group-focus-visible:text-coral">
+              <span className="mt-1 inline-flex items-center gap-1 text-[11px] text-muted transition-colors group-hover:text-coral-deep group-focus-visible:text-coral-deep">
                 <ChevronRight
                   className={`size-3 transition-transform ${open ? "rotate-90" : ""}`}
                   strokeWidth={2.4}
                 />
                 <span
                   className={`transition-opacity ${
-                    open ? "opacity-100" : "opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100"
+                    open
+                      ? "opacity-100"
+                      : "opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100"
                   }`}
                 >
                   {open ? "Hide payload" : "Show payload"}
@@ -134,9 +126,9 @@ function Node({
           {open && node.payload && <Payload data={node.payload} />}
 
           {node.children && node.children.length > 0 && (
-            <ul className="mt-3 border-l border-console-line pl-4">
+            <ul className="mt-3 border-l border-line pl-4">
               {node.children.map((child, i) => (
-                <Node key={child.id} node={child} index={i} depth={depth + 1} animate={false} />
+                <Node key={child.id} node={child} index={i} animate={false} />
               ))}
             </ul>
           )}
@@ -156,7 +148,7 @@ export function DecisionTree({
   return (
     <ul className="[&>li:last-child>div>.last-rail-hide]:hidden">
       {nodes.map((node, i) => (
-        <Node key={node.id} node={node} index={i} depth={0} animate={animate} />
+        <Node key={node.id} node={node} index={i} animate={animate} />
       ))}
     </ul>
   );

@@ -1,26 +1,12 @@
 "use client";
 
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useMemo,
-  useState,
-} from "react";
-import { CATALOG, type CatalogItem } from "./catalog";
+import { createContext, useCallback, useContext, useMemo, useState } from "react";
+import { CATALOG } from "@/features/catalog";
+import type { CartLine, Purchase, PurchaseResult } from "./types";
 
 export const STARTING_BALANCE = 50;
 
-export type CartLine = { item: CatalogItem; quantity: number };
-
-export type Purchase = {
-  id: string;
-  placedAt: string;
-  lines: CartLine[];
-  total: number;
-};
-
-type ShopValue = {
+type WalletValue = {
   balance: number;
   cart: CartLine[];
   cartTotal: number;
@@ -30,18 +16,18 @@ type ShopValue = {
   remove: (id: string) => void;
   setQuantity: (id: string, quantity: number) => void;
   clearCart: () => void;
-  purchase: () => { ok: true; purchase: Purchase } | { ok: false; error: string };
+  purchase: () => PurchaseResult;
   reset: () => void;
 };
 
-const ShopContext = createContext<ShopValue | null>(null);
+const WalletContext = createContext<WalletValue | null>(null);
 
 /**
- * All shop state lives here for the length of the tab. There is no store
- * library and no persistence: a reload puts the wallet back to 50.00, which is
- * what you want when you are re-running the same assistant scenario.
+ * Balance, basket and placed orders for the length of the tab. There is no
+ * store library and no persistence: a reload puts the wallet back to 50.00,
+ * which is what you want when re-running the same assistant scenario.
  */
-export function ShopProvider({ children }: { children: React.ReactNode }) {
+export function WalletProvider({ children }: { children: React.ReactNode }) {
   const [balance, setBalance] = useState(STARTING_BALANCE);
   const [cart, setCart] = useState<CartLine[]>([]);
   const [purchases, setPurchases] = useState<Purchase[]>([]);
@@ -52,9 +38,7 @@ export function ShopProvider({ children }: { children: React.ReactNode }) {
     setCart((prev) => {
       const existing = prev.find((l) => l.item.id === id);
       if (existing) {
-        return prev.map((l) =>
-          l.item.id === id ? { ...l, quantity: l.quantity + 1 } : l,
-        );
+        return prev.map((l) => (l.item.id === id ? { ...l, quantity: l.quantity + 1 } : l));
       }
       return [...prev, { item, quantity: 1 }];
     });
@@ -69,9 +53,7 @@ export function ShopProvider({ children }: { children: React.ReactNode }) {
       setCart((prev) => prev.filter((l) => l.item.id !== id));
       return;
     }
-    setCart((prev) =>
-      prev.map((l) => (l.item.id === id ? { ...l, quantity } : l)),
-    );
+    setCart((prev) => prev.map((l) => (l.item.id === id ? { ...l, quantity } : l)));
   }, []);
 
   const clearCart = useCallback(() => setCart([]), []);
@@ -81,20 +63,17 @@ export function ShopProvider({ children }: { children: React.ReactNode }) {
     [cart],
   );
 
-  const cartCount = useMemo(
-    () => cart.reduce((sum, l) => sum + l.quantity, 0),
-    [cart],
-  );
+  const cartCount = useMemo(() => cart.reduce((sum, l) => sum + l.quantity, 0), [cart]);
 
-  const purchase = useCallback(() => {
+  const purchase = useCallback((): PurchaseResult => {
     if (cart.length === 0) {
-      return { ok: false as const, error: "Your basket is empty." };
+      return { ok: false, error: "Your basket is empty." };
     }
     const total = cart.reduce((sum, l) => sum + l.item.price * l.quantity, 0);
     if (total > balance) {
       const short = total - balance;
       return {
-        ok: false as const,
+        ok: false,
         error: `Your wallet is short by €${short.toFixed(2)}. Remove something, or top up.`,
       };
     }
@@ -107,7 +86,7 @@ export function ShopProvider({ children }: { children: React.ReactNode }) {
     setBalance((b) => Number((b - total).toFixed(2)));
     setPurchases((p) => [record, ...p]);
     setCart([]);
-    return { ok: true as const, purchase: record };
+    return { ok: true, purchase: record };
   }, [cart, balance]);
 
   const reset = useCallback(() => {
@@ -133,11 +112,11 @@ export function ShopProvider({ children }: { children: React.ReactNode }) {
     [balance, cart, cartTotal, cartCount, purchases, add, remove, setQuantity, clearCart, purchase, reset],
   );
 
-  return <ShopContext.Provider value={value}>{children}</ShopContext.Provider>;
+  return <WalletContext.Provider value={value}>{children}</WalletContext.Provider>;
 }
 
-export function useShop() {
-  const ctx = useContext(ShopContext);
-  if (!ctx) throw new Error("useShop must be used inside ShopProvider");
+export function useWallet() {
+  const ctx = useContext(WalletContext);
+  if (!ctx) throw new Error("useWallet must be used inside WalletProvider");
   return ctx;
 }

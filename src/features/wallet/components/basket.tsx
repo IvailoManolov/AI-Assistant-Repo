@@ -2,11 +2,11 @@
 
 import { useState } from "react";
 import { Minus, Plus, Trash2 } from "lucide-react";
-import { eur } from "@/lib/catalog";
-import { useShop } from "@/lib/shop-context";
+import { eur } from "@/shared";
+import { useWallet } from "../model/wallet-context";
 
 export function Basket() {
-  const { cart, cartTotal, balance, setQuantity, remove, purchase, purchases } = useShop();
+  const { cart, cartTotal, balance, setQuantity, remove, purchase, purchases } = useWallet();
   const [message, setMessage] = useState<{ tone: "ok" | "error"; text: string } | null>(null);
 
   const after = balance - cartTotal;

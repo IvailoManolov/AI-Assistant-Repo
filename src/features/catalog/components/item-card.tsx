@@ -1,9 +1,9 @@
 "use client";
 
-import { useMemo, useState } from "react";
 import { Check, Plus } from "lucide-react";
-import { CATALOG, CATEGORIES, eur, type CatalogItem } from "@/lib/catalog";
-import { useShop } from "@/lib/shop-context";
+import { eur } from "@/shared";
+import { useWallet } from "@/features/wallet";
+import type { CatalogItem, Category } from "../model/types";
 
 /**
  * There is no product photography here, so each card carries a glaze swatch
@@ -11,15 +11,15 @@ import { useShop } from "@/lib/shop-context";
  * earthenware range. Twenty of these have to sit quietly together, and coral
  * is reserved for actions and status, so none of them compete with it.
  */
-const GLAZE: Record<CatalogItem["category"], { tone: string; sheen: string }> = {
+const GLAZE: Record<Category, { tone: string; sheen: string }> = {
   Table: { tone: "#dccbb4", sheen: "#efe4d4" },
   Kitchen: { tone: "#c8a179", sheen: "#e3c8a8" },
   Glass: { tone: "#b6c8c3", sheen: "#d8e4e0" },
   Carry: { tone: "#a8b2b8", sheen: "#ccd4d8" },
 };
 
-function ItemCard({ item }: { item: CatalogItem }) {
-  const { add, balance, cart } = useShop();
+export function ItemCard({ item }: { item: CatalogItem }) {
+  const { add, balance, cart } = useWallet();
   const inCart = cart.find((l) => l.item.id === item.id);
   const glaze = GLAZE[item.category];
   const unaffordable = item.price > balance;
@@ -46,9 +46,7 @@ function ItemCard({ item }: { item: CatalogItem }) {
         <div className="mt-auto flex items-center justify-between gap-2 pt-4">
           <span className="text-[11px] text-muted">
             {item.material}
-            {unaffordable && (
-              <span className="mt-0.5 block text-danger">Over your balance</span>
-            )}
+            {unaffordable && <span className="mt-0.5 block text-danger">Over your balance</span>}
           </span>
           <button
             type="button"
@@ -74,43 +72,5 @@ function ItemCard({ item }: { item: CatalogItem }) {
         </div>
       </div>
     </article>
-  );
-}
-
-export function CatalogGrid() {
-  const [filter, setFilter] = useState<string>("All");
-
-  const items = useMemo(
-    () => (filter === "All" ? CATALOG : CATALOG.filter((i) => i.category === filter)),
-    [filter],
-  );
-
-  return (
-    <section>
-      <div className="mb-5 flex flex-wrap items-center gap-2">
-        {["All", ...CATEGORIES].map((c) => (
-          <button
-            key={c}
-            type="button"
-            onClick={() => setFilter(c)}
-            aria-pressed={filter === c}
-            className={`rounded-full px-3.5 py-1.5 text-[13px] font-medium transition-colors ${
-              filter === c
-                ? "bg-ink text-cream"
-                : "bg-paper text-ink-soft ring-1 ring-line hover:bg-cream-deep"
-            }`}
-          >
-            {c}
-          </button>
-        ))}
-        <span className="ml-auto text-[13px] text-muted">{items.length} items</span>
-      </div>
-
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
-        {items.map((item) => (
-          <ItemCard key={item.id} item={item} />
-        ))}
-      </div>
-    </section>
   );
 }

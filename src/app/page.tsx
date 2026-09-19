@@ -1,18 +1,30 @@
 import Link from "next/link";
-import { DecisionTree } from "@/components/decision-tree";
-import { SESSIONS } from "@/lib/sessions";
-import { CATALOG } from "@/lib/catalog";
+import { BrandMark } from "@/shared";
+import { CATALOG } from "@/features/catalog";
+import { DecisionTree, SESSIONS, StatusMarker } from "@/features/sessions";
 
 const HERO_SESSION = SESSIONS.find((s) => s.id === "SES-7c19")!;
+
+const FACTS = [
+  {
+    t: "€50.00",
+    d: "The wallet the assistant is limited to. Some things in the shop cost more than that.",
+  },
+  {
+    t: `${CATALOG.length} items`,
+    d: "A real catalog with real prices, so shortfalls and partial baskets happen on their own.",
+  },
+  {
+    t: "Full replay",
+    d: "Transcript, decision tree and server log, kept together per session.",
+  },
+];
 
 export default function Landing() {
   return (
     <div className="bg-grain min-h-dvh">
       <header className="mx-auto flex max-w-6xl items-center justify-between px-5 py-6 sm:px-8">
-        <Link href="/" className="flex items-center gap-2.5">
-          <span className="size-3 rounded-full bg-coral" aria-hidden />
-          <span className="font-display text-lg font-bold">Kiln</span>
-        </Link>
+        <BrandMark />
         <Link
           href="/login"
           className="rounded-full bg-ink px-4 py-2 text-sm font-semibold text-cream transition-colors hover:bg-coral-deep"
@@ -28,11 +40,10 @@ export default function Landing() {
               Watch the assistant think before it spends.
             </h1>
             <p className="mt-6 max-w-[46ch] text-[1.0625rem] leading-relaxed text-ink-soft">
-              Kiln is a homeware shop with an AI assistant sitting on the
-              customer&rsquo;s wallet. It can look up orders, issue refunds and
-              buy things. Every intent, tool call, policy check and refusal it
-              makes is recorded, so you can open any conversation afterwards and
-              read the decision that produced the answer.
+              Kiln is a homeware shop with an AI assistant sitting on the customer&rsquo;s wallet.
+              It can look up orders, issue refunds and buy things. Every intent, tool call, policy
+              check and refusal it makes is recorded, so you can open any conversation afterwards
+              and read the decision that produced the answer.
             </p>
 
             <div className="mt-8 flex flex-wrap items-center gap-3">
@@ -42,30 +53,26 @@ export default function Landing() {
               >
                 Sign in
               </Link>
-              <p className="text-sm text-muted">
-                Two demo accounts, one shopper and one operator.
-              </p>
+              <p className="text-sm text-muted">Two demo accounts, one shopper and one operator.</p>
             </div>
-
           </div>
 
-          {/* The hero is the product's own output: a console pane, on paper. */}
-          <div className="bg-console shadow-soft overflow-hidden rounded-2xl ring-1 ring-console-line">
-            <div className="flex flex-wrap items-center justify-between gap-2 border-b border-console-line px-5 py-3.5">
-              <div className="flex items-center gap-2.5">
-                <span className="size-2 rounded-full bg-amber" aria-hidden />
-                <span className="font-mono text-xs text-console-text">{HERO_SESSION.id}</span>
-                <span className="text-xs text-console-muted">{HERO_SESSION.customer}</span>
-              </div>
-              <span className="font-mono text-[11px] text-console-muted tabular-nums">
+          {/* The hero is the product's own output: one recorded session. */}
+          <div className="bg-paper shadow-soft overflow-hidden rounded-2xl ring-1 ring-line">
+            <div className="bg-cream-deep flex flex-wrap items-center justify-between gap-2 border-b border-line px-5 py-3.5">
+              <span className="flex items-center gap-2.5">
+                <StatusMarker status={HERO_SESSION.outcome} />
+                <span className="font-mono text-xs">{HERO_SESSION.id}</span>
+                <span className="text-xs text-muted">{HERO_SESSION.customer}</span>
+              </span>
+              <span className="font-mono text-[11px] text-muted tabular-nums">
                 {(HERO_SESSION.durationMs / 1000).toFixed(2)}s
               </span>
             </div>
 
-            <div className="border-b border-console-line px-5 py-4">
-              <p className="text-[13px] leading-relaxed text-console-muted">
-                <span className="text-console-text">Anna:</span>{" "}
-                {HERO_SESSION.turns[0].text}
+            <div className="border-b border-line px-5 py-4">
+              <p className="text-[13px] leading-relaxed text-ink-soft">
+                <span className="font-medium text-ink">Anna:</span> {HERO_SESSION.turns[0].text}
               </p>
             </div>
 
@@ -76,11 +83,7 @@ export default function Landing() {
         </section>
 
         <dl className="mb-16 grid gap-px overflow-hidden rounded-xl bg-line sm:grid-cols-3">
-          {[
-            { t: "€50.00", d: "The wallet the assistant is limited to. Some things in the shop cost more than that." },
-            { t: `${CATALOG.length} items`, d: "A real catalog with real prices, so shortfalls and partial baskets happen on their own." },
-            { t: "Full replay", d: "Transcript, decision tree and server log, kept together per session." },
-          ].map((f) => (
+          {FACTS.map((f) => (
             <div key={f.t} className="bg-paper px-5 py-5">
               <dt className="font-display text-xl font-bold">{f.t}</dt>
               <dd className="mt-1.5 max-w-[42ch] text-[13px] leading-snug text-muted">{f.d}</dd>
@@ -92,7 +95,7 @@ export default function Landing() {
       <footer className="border-t border-line">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-5 py-6 text-[13px] text-muted sm:px-8">
           <span>Kiln is a demo environment. No real payments, no real orders.</span>
-          <Link href="/login" className="font-medium text-ink transition-colors hover:text-coral">
+          <Link href="/login" className="font-medium text-ink transition-colors hover:text-coral-deep">
             Sign in
           </Link>
         </div>

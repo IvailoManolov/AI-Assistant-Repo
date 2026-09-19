@@ -3,12 +3,11 @@
 /* ------------------------------------------------------------------ *
  * Kiln - design tokens
  *
- * Two grounds, one accent family. The customer shop runs on warm paper;
- * the operator console inverts to ink. Screen temperature tells you which
- * role you are in before you read a word.
+ * One palette across the whole product: warm paper, ink text, coral for
+ * action. Status colours (green / amber / red) are only ever applied to
+ * something that actually has a status.
  * ------------------------------------------------------------------ */
 :root {
-  /* paper ground - customer surfaces */
   --cream: #faf6ef;
   --cream-deep: #f4ecdf;
   --paper: #fffdf9;
@@ -17,26 +16,26 @@
   --muted: #8c8172;
   --line: #e9dfce;
 
-  /* ink ground - operator console */
-  --console: #17130e;
-  --console-panel: #1f1913;
-  --console-raised: #2a2219;
-  --console-line: #352c21;
-  --console-text: #efe7db;
-  --console-muted: #9d9081;
+  /* Recessed surface for machine output: payloads, log tables, code. */
+  --sunk: #f6f0e5;
+  --sunk-line: #e0d4be;
 
-  /* accent */
   --coral: #f0603a;
   --coral-deep: #d94a26;
   --coral-soft: #ffe9e1;
 
-  /* status - only ever applied to things that have a status */
-  --amber: #f4a52b;
-  --amber-soft: #fdf0d8;
-  --green: #2fa46a;
+  /* Two weights per status: the darker one is for text, which has to pass
+     contrast on paper; the brighter one is for dots and rings, which have to
+     be picked out at a glance. */
+  --amber: #96650a;
+  --amber-soft: #fbeed3;
+  --amber-signal: #e8a11c;
+  --green: #1d7049;
   --green-soft: #e2f4ea;
-  --danger: #e24d34;
-  --danger-soft: #fde3dc;
+  --green-signal: #2fa46a;
+  --danger: #b83a21;
+  --danger-soft: #fbe1da;
+  --danger-signal: #e24d34;
 }
 
 @theme inline {
@@ -48,12 +47,8 @@
   --color-muted: var(--muted);
   --color-line: var(--line);
 
-  --color-console: var(--console);
-  --color-console-panel: var(--console-panel);
-  --color-console-raised: var(--console-raised);
-  --color-console-line: var(--console-line);
-  --color-console-text: var(--console-text);
-  --color-console-muted: var(--console-muted);
+  --color-sunk: var(--sunk);
+  --color-sunk-line: var(--sunk-line);
 
   --color-coral: var(--coral);
   --color-coral-deep: var(--coral-deep);
@@ -61,10 +56,13 @@
 
   --color-amber: var(--amber);
   --color-amber-soft: var(--amber-soft);
+  --color-amber-signal: var(--amber-signal);
   --color-green: var(--green);
   --color-green-soft: var(--green-soft);
+  --color-green-signal: var(--green-signal);
   --color-danger: var(--danger);
   --color-danger-soft: var(--danger-soft);
+  --color-danger-signal: var(--danger-signal);
 
   --font-display: var(--font-display);
   --font-sans: var(--font-sans);
@@ -99,7 +97,6 @@ body {
   font-family: var(--font-mono), ui-monospace, monospace;
 }
 
-/* Warm paper grain, customer surfaces only */
 .bg-grain {
   background-image:
     radial-gradient(60rem 60rem at 85% -10%, rgba(244, 165, 43, 0.08), transparent 60%),
@@ -119,17 +116,15 @@ body {
     0 18px 40px -12px rgba(36, 31, 24, 0.14);
 }
 
-/* Keyboard focus is always visible, on both grounds */
 :where(a, button, input, select, textarea, [tabindex]):focus-visible {
   outline: 2px solid var(--coral);
   outline-offset: 2px;
   border-radius: 4px;
 }
 
-/* Console scrollbars sit inside the dark ground rather than on top of it */
-.console-scroll {
+.thin-scroll {
   scrollbar-width: thin;
-  scrollbar-color: var(--console-line) transparent;
+  scrollbar-color: var(--line) transparent;
 }
 
 /* The one orchestrated motion moment: decision nodes arriving in sequence,

@@ -1,11 +1,4 @@
-export type CatalogItem = {
-  id: string;
-  name: string;
-  blurb: string;
-  price: number;
-  category: "Table" | "Kitchen" | "Glass" | "Carry";
-  material: string;
-};
+import type { CatalogItem } from "../model/types";
 
 /**
  * The Kiln catalog. Prices are EUR.
@@ -39,6 +32,3 @@ export const CATALOG: CatalogItem[] = [
 ];
 
 export const CATEGORIES = ["Table", "Kitchen", "Glass", "Carry"] as const;
-
-export const eur = (n: number) =>
-  new Intl.NumberFormat("en-IE", { style: "currency", currency: "EUR" }).format(n);
