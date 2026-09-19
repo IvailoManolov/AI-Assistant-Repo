@@ -1,0 +1,23 @@
+[
+  { "item_id": "ITEM-101", "name": "Ceramic Dinner Set", "unit_price_minor": 6480, "currency": "EUR", "category": "Table", "material": "Stoneware", "blurb": "Four plates, four bowls, fired matte.", "listed": true },
+  { "item_id": "ITEM-201", "name": "Wine Glass", "unit_price_minor": 1490, "currency": "EUR", "category": "Glass", "material": "Crystal", "blurb": "Thin-walled, unusually light in the hand.", "listed": true },
+  { "item_id": "ITEM-202", "name": "Decanter", "unit_price_minor": 2500, "currency": "EUR", "category": "Glass", "material": "Crystal", "blurb": "Wide base, slow pour, no drip.", "listed": true },
+  { "item_id": "ITEM-301", "name": "Travel Mug", "unit_price_minor": 2990, "currency": "EUR", "category": "Carry", "material": "Steel", "blurb": "Holds heat for six hours. Fits one hand.", "listed": true },
+  { "item_id": "ITEM-102", "name": "Serving Platter", "unit_price_minor": 3800, "currency": "EUR", "category": "Table", "material": "Stoneware", "blurb": "Long enough for a whole fish.", "listed": true },
+  { "item_id": "ITEM-103", "name": "Pasta Bowl", "unit_price_minor": 1250, "currency": "EUR", "category": "Table", "material": "Stoneware", "blurb": "Deep well, wide rim, sold singly.", "listed": true },
+  { "item_id": "ITEM-104", "name": "Side Plate", "unit_price_minor": 840, "currency": "EUR", "category": "Table", "material": "Stoneware", "blurb": "The one you actually use every day.", "listed": true },
+  { "item_id": "ITEM-105", "name": "Linen Napkin Set", "unit_price_minor": 2200, "currency": "EUR", "category": "Table", "material": "Linen", "blurb": "Six, stonewashed, they get better.", "listed": true },
+  { "item_id": "ITEM-203", "name": "Tumbler", "unit_price_minor": 960, "currency": "EUR", "category": "Glass", "material": "Glass", "blurb": "Heavy bottom. Reads as a whisky glass.", "listed": true },
+  { "item_id": "ITEM-204", "name": "Carafe", "unit_price_minor": 1850, "currency": "EUR", "category": "Glass", "material": "Glass", "blurb": "Water on the table, no ceremony.", "listed": true },
+  { "item_id": "ITEM-205", "name": "Champagne Coupe", "unit_price_minor": 3100, "currency": "EUR", "category": "Glass", "material": "Crystal", "blurb": "Shallow, 1920s profile, pair.", "listed": true },
+  { "item_id": "ITEM-407", "name": "Cast Iron Pan", "unit_price_minor": 5400, "currency": "EUR", "category": "Kitchen", "material": "Cast iron", "blurb": "Pre-seasoned. Will outlive you.", "listed": true },
+  { "item_id": "ITEM-402", "name": "Chef Knife", "unit_price_minor": 7200, "currency": "EUR", "category": "Kitchen", "material": "Carbon steel", "blurb": "Eight inches, full tang, carbon steel.", "listed": true },
+  { "item_id": "ITEM-403", "name": "Wooden Spoon", "unit_price_minor": 690, "currency": "EUR", "category": "Kitchen", "material": "Olive wood", "blurb": "Olive wood, cut from one piece.", "listed": true },
+  { "item_id": "ITEM-404", "name": "Pepper Mill", "unit_price_minor": 2750, "currency": "EUR", "category": "Kitchen", "material": "Beech", "blurb": "Ceramic burr, adjustable to dust.", "listed": true },
+  { "item_id": "ITEM-405", "name": "Mixing Bowl", "unit_price_minor": 1620, "currency": "EUR", "category": "Kitchen", "material": "Stoneware", "blurb": "Three litres, pour spout, grips.", "listed": true },
+  { "item_id": "ITEM-406", "name": "Copper Saucepan", "unit_price_minor": 8900, "currency": "EUR", "category": "Kitchen", "material": "Copper", "blurb": "Small, tin-lined, for sauces only.", "listed": true },
+  { "item_id": "ITEM-302", "name": "Lunch Tin", "unit_price_minor": 2100, "currency": "EUR", "category": "Carry", "material": "Steel", "blurb": "Two compartments, seals cold.", "listed": true },
+  { "item_id": "ITEM-303", "name": "Water Bottle", "unit_price_minor": 1940, "currency": "EUR", "category": "Carry", "material": "Steel", "blurb": "750ml, narrow mouth, no plastic taste.", "listed": true },
+  { "item_id": "ITEM-304", "name": "Canvas Tote", "unit_price_minor": 3400, "currency": "EUR", "category": "Carry", "material": "Canvas", "blurb": "Waxed base, carries a full shop.", "listed": true },
+  { "item_id": "ITEM-401", "name": "Wireless Headphones", "unit_price_minor": 12900, "currency": "EUR", "category": "Audio", "material": "Plastic", "blurb": "Over-ear, forty hours. Not sold in this shop.", "listed": false }
+]

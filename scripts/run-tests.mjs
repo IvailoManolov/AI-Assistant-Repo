@@ -1,39 +1,68 @@
 /**
- * Test entry point for the pre-commit guard.
+ * Test entry point for `npm test` and for the pre-commit guard.
  *
- * There is no test suite yet. Rather than let the guard silently pass on an
- * empty run, this script looks for test files and reports honestly:
- *  - no test files found  -> pass, and say so loudly
- *  - test files found     -> hand off to the real runner
+ * Every test lives under `tests/`, one folder per feature, so this walks that
+ * one directory rather than the whole repository. A test file anywhere else is
+ * reported rather than run: the point of the layout is that there is one place
+ * to look, and silently picking up strays would undo it.
  *
- * When a runner is added, replace the handoff branch with it.
+ * Node runs TypeScript directly by stripping types, so the suite needs no test
+ * framework and no build step.
  */
-import { readdirSync, statSync, existsSync } from "node:fs";
+import { spawnSync } from "node:child_process";
+import { existsSync, readdirSync, statSync } from "node:fs";
 import { join, relative } from "node:path";
 
 const ROOT = process.cwd();
+const TESTS = join(ROOT, "tests");
 const SKIP = new Set(["node_modules", ".next", ".git", "dist", "build", ".husky"]);
-const TEST_PATTERN = /\.(test|spec)\.(ts|tsx|js|jsx|mjs)$/;
+const TEST_PATTERN = /\.test\.ts$/;
 
-function findTests(dir, found = []) {
+function walk(dir, found = []) {
   for (const entry of readdirSync(dir)) {
     if (SKIP.has(entry)) continue;
     const full = join(dir, entry);
-    if (statSync(full).isDirectory()) findTests(full, found);
+    if (statSync(full).isDirectory()) walk(full, found);
     else if (TEST_PATTERN.test(entry)) found.push(relative(ROOT, full));
   }
   return found;
 }
 
-const tests = existsSync(ROOT) ? findTests(ROOT) : [];
-
-if (tests.length === 0) {
-  console.log("No test files found. Nothing to run.");
-  console.log("The pre-commit guard still ran typecheck and lint.");
-  process.exit(0);
+if (!existsSync(TESTS)) {
+  console.error("No tests/ directory. Every suite belongs in tests/<feature>/<feature>.test.ts");
+  process.exit(1);
 }
 
-console.error(`Found ${tests.length} test file(s) but no runner is configured:`);
-for (const t of tests) console.error(`  ${t}`);
-console.error("\nWire a runner into scripts/run-tests.mjs before committing tests.");
-process.exit(1);
+const tests = walk(TESTS).sort();
+
+/** A suite that drifted back into src/ would never run. Say so loudly. */
+const strays = walk(join(ROOT, "src")).filter((f) => !f.startsWith("tests"));
+if (strays.length > 0) {
+  console.error("Test files found outside tests/. Move them to tests/<feature>/:");
+  for (const stray of strays) console.error(`  ${stray}`);
+  process.exit(1);
+}
+
+if (tests.length === 0) {
+  console.error("tests/ holds no .test.ts files.");
+  process.exit(1);
+}
+
+const byFeature = new Map();
+for (const file of tests) {
+  const feature = file.split("/")[1];
+  byFeature.set(feature, [...(byFeature.get(feature) ?? []), file]);
+}
+
+console.log(`Running ${tests.length} suite(s) across ${byFeature.size} feature(s):`);
+for (const [feature, files] of byFeature) {
+  console.log(`  ${feature}: ${files.map((f) => f.split("/").pop()).join(", ")}`);
+}
+
+const result = spawnSync(
+  process.execPath,
+  ["--disable-warning=MODULE_TYPELESS_PACKAGE_JSON", "--test", ...tests],
+  { stdio: "inherit" },
+);
+
+process.exit(result.status ?? 1);

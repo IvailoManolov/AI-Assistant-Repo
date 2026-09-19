@@ -1,0 +1,798 @@
+[
+  {
+    "id": "SES-7c19",
+    "customer": "Anna Petrova",
+    "customerId": "CUST-001",
+    "startedAt": "2026-09-19T09:42:11Z",
+    "durationMs": 3180,
+    "summary": "Refund for one broken wine glass. Held for approval at €14.90.",
+    "outcome": "hold",
+    "turns": [
+      {
+        "id": "t1",
+        "role": "customer",
+        "at": "09:42:11",
+        "text": "One of the wine glasses in order ORD-200 arrived broken. Can I get a refund for it?"
+      },
+      {
+        "id": "t2",
+        "role": "assistant",
+        "at": "09:42:14",
+        "text": "Sorry about the glass. Order ORD-200 has two wine glasses at €14.90 each, so a refund for the one broken glass comes to €14.90. I have drafted it as REF-8831. A colleague approves refunds over €10, so it will be reviewed today and you will get an email when it is sent."
+      },
+      {
+        "id": "t3",
+        "role": "system",
+        "at": "09:42:14",
+        "text": "Refund REF-8831 created in state awaiting_approval. No funds moved."
+      }
+    ],
+    "tree": [
+      {
+        "id": "n1",
+        "kind": "intent",
+        "label": "Classify request",
+        "detail": "refund_request, confidence 0.91",
+        "status": "ok",
+        "ms": 210,
+        "payload": {
+          "candidates": [
+            {
+              "intent": "refund_request",
+              "confidence": 0.91
+            },
+            {
+              "intent": "report_damage",
+              "confidence": 0.74
+            },
+            {
+              "intent": "order_status",
+              "confidence": 0.12
+            }
+          ]
+        }
+      },
+      {
+        "id": "n2",
+        "kind": "policy",
+        "label": "Order ownership",
+        "detail": "ORD-200 belongs to CUST-001",
+        "status": "ok",
+        "ms": 4,
+        "payload": {
+          "order_id": "ORD-200",
+          "owner": "CUST-001",
+          "authenticated_as": "CUST-001",
+          "match": true
+        }
+      },
+      {
+        "id": "n3",
+        "kind": "tool",
+        "label": "get_order",
+        "detail": "3 line items, €54.80 total, delivered",
+        "status": "ok",
+        "ms": 38,
+        "payload": {
+          "request": {
+            "order_id": "ORD-200"
+          },
+          "response": {
+            "status": "delivered",
+            "total": 54.8,
+            "items": [
+              {
+                "item_id": "ITEM-201",
+                "name": "Wine Glass",
+                "quantity": 2,
+                "unit_price": 14.9
+              },
+              {
+                "item_id": "ITEM-202",
+                "name": "Decanter",
+                "quantity": 1,
+                "unit_price": 25
+              }
+            ]
+          }
+        }
+      },
+      {
+        "id": "n4",
+        "kind": "model",
+        "label": "Resolve affected units",
+        "detail": "\"one of the wine glasses\" reads as 1 of 2",
+        "status": "ok",
+        "ms": 640,
+        "payload": {
+          "matched_item": "ITEM-201",
+          "quantity_claimed": 1,
+          "quantity_on_order": 2,
+          "note": "Customer did not ask for the line total. Refunding both units would overpay by 14.90."
+        }
+      },
+      {
+        "id": "n5",
+        "kind": "tool",
+        "label": "compute_refund",
+        "detail": "One unit at €14.90, not the line and not the order",
+        "status": "ok",
+        "ms": 11,
+        "payload": {
+          "basis": "unit_price * quantity_affected",
+          "unit_price": 14.9,
+          "quantity_affected": 1,
+          "amount": 14.9,
+          "rejected": {
+            "line_total": 29.8,
+            "order_total": 54.8
+          }
+        }
+      },
+      {
+        "id": "n6",
+        "kind": "policy",
+        "label": "R11 Payment settled",
+        "detail": "ORD-200 was paid for, so there is something to give back",
+        "status": "ok",
+        "ms": 2,
+        "payload": {
+          "paid": true,
+          "rule": "R11",
+          "note": "A refund on an unpaid order is refused before any amount is worked out."
+        }
+      },
+      {
+        "id": "n7",
+        "kind": "policy",
+        "label": "R9 Human approval",
+        "detail": "€14.90 is above the auto-approval ceiling of €0.00, so an operator decides",
+        "status": "hold",
+        "ms": 2,
+        "payload": {
+          "ceiling": 0,
+          "amount": 14.9,
+          "auto_approve": false,
+          "route_to": "operator_queue"
+        }
+      },
+      {
+        "id": "n8",
+        "kind": "outcome",
+        "label": "Refund drafted, not paid",
+        "detail": "REF-8831 awaiting approval",
+        "status": "hold",
+        "ms": 19,
+        "payload": {
+          "refund_id": "REF-8831",
+          "state": "awaiting_approval",
+          "amount": 14.9,
+          "funds_moved": false
+        }
+      }
+    ],
+    "logs": [
+      {
+        "at": "09:42:11.004",
+        "level": "info",
+        "scope": "http",
+        "message": "POST /api/assistant/message session=SES-7c19",
+        "sessionId": "SES-7c19"
+      },
+      {
+        "at": "09:42:11.006",
+        "level": "debug",
+        "scope": "auth",
+        "message": "authenticated_customer_id=CUST-001 (pre-established)",
+        "sessionId": "SES-7c19"
+      },
+      {
+        "at": "09:42:11.219",
+        "level": "info",
+        "scope": "agent",
+        "message": "intent=refund_request confidence=0.91",
+        "sessionId": "SES-7c19"
+      },
+      {
+        "at": "09:42:11.224",
+        "level": "info",
+        "scope": "policy",
+        "message": "ownership.check order=ORD-200 result=pass",
+        "sessionId": "SES-7c19"
+      },
+      {
+        "at": "09:42:11.263",
+        "level": "debug",
+        "scope": "tool",
+        "message": "get_order order_id=ORD-200 -> 200 in 38ms",
+        "sessionId": "SES-7c19"
+      },
+      {
+        "at": "09:42:11.905",
+        "level": "info",
+        "scope": "agent",
+        "message": "resolved quantity_affected=1 of 2 for ITEM-201",
+        "sessionId": "SES-7c19"
+      },
+      {
+        "at": "09:42:11.917",
+        "level": "info",
+        "scope": "tool",
+        "message": "compute_refund amount=14.90 basis=unit",
+        "sessionId": "SES-7c19"
+      },
+      {
+        "at": "09:42:11.921",
+        "level": "warn",
+        "scope": "policy",
+        "message": "auto_approve=false amount=14.90 exceeds ceiling=10.00",
+        "sessionId": "SES-7c19"
+      },
+      {
+        "at": "09:42:11.940",
+        "level": "info",
+        "scope": "refund",
+        "message": "REF-8831 created state=awaiting_approval funds_moved=false",
+        "sessionId": "SES-7c19"
+      },
+      {
+        "at": "09:42:14.188",
+        "level": "info",
+        "scope": "http",
+        "message": "200 OK in 3180ms",
+        "sessionId": "SES-7c19"
+      }
+    ],
+    "lifecycle": "closed",
+    "lastActivityAt": "2026-09-19T09:42:14.180Z"
+  },
+  {
+    "id": "SES-91d3",
+    "customer": "Anna Petrova",
+    "customerId": "CUST-001",
+    "startedAt": "2026-09-19T09:31:02Z",
+    "durationMs": 890,
+    "summary": "Asked about an order belonging to another customer. Refused.",
+    "outcome": "blocked",
+    "turns": [
+      {
+        "id": "t1",
+        "role": "customer",
+        "at": "09:31:02",
+        "text": "What is the status of order ORD-204?"
+      },
+      {
+        "id": "t2",
+        "role": "assistant",
+        "at": "09:31:03",
+        "text": "I cannot find an order ORD-204 on your account. If you have the confirmation email to hand, check the order number there, or I can list the orders I can see for you."
+      },
+      {
+        "id": "t3",
+        "role": "system",
+        "at": "09:31:03",
+        "text": "Ownership check failed. Order lookup was not executed and no order data reached the model."
+      }
+    ],
+    "tree": [
+      {
+        "id": "n1",
+        "kind": "intent",
+        "label": "Classify request",
+        "detail": "order_status, confidence 0.96",
+        "status": "ok",
+        "ms": 180,
+        "payload": {
+          "candidates": [
+            {
+              "intent": "order_status",
+              "confidence": 0.96
+            }
+          ]
+        }
+      },
+      {
+        "id": "n2",
+        "kind": "policy",
+        "label": "Order ownership",
+        "detail": "ORD-204 belongs to CUST-002, so the request is refused",
+        "status": "blocked",
+        "ms": 5,
+        "payload": {
+          "order_id": "ORD-204",
+          "owner": "CUST-002",
+          "authenticated_as": "CUST-001",
+          "match": false,
+          "action": "deny_before_fetch"
+        }
+      },
+      {
+        "id": "n3",
+        "kind": "tool",
+        "label": "get_order",
+        "detail": "Not called. The check runs before the fetch.",
+        "status": "skipped",
+        "ms": 0,
+        "payload": {
+          "reason": "ownership_denied",
+          "note": "Fetching first and filtering after would put another customer's data in the model context."
+        }
+      },
+      {
+        "id": "n4",
+        "kind": "model",
+        "label": "Compose refusal",
+        "detail": "Worded so it does not confirm the order exists",
+        "status": "ok",
+        "ms": 690,
+        "payload": {
+          "constraint": "must_not_confirm_existence",
+          "rejected_draft": "That order belongs to a different account.",
+          "reason": "Confirms the order exists and is someone else's."
+        }
+      },
+      {
+        "id": "n5",
+        "kind": "outcome",
+        "label": "Refused, nothing disclosed",
+        "detail": "No order fields entered the reply",
+        "status": "blocked",
+        "ms": 8,
+        "payload": {
+          "disclosed_fields": [],
+          "tools_called": 0
+        }
+      }
+    ],
+    "logs": [
+      {
+        "at": "09:31:02.001",
+        "level": "info",
+        "scope": "http",
+        "message": "POST /api/assistant/message session=SES-91d3",
+        "sessionId": "SES-91d3"
+      },
+      {
+        "at": "09:31:02.003",
+        "level": "debug",
+        "scope": "auth",
+        "message": "authenticated_customer_id=CUST-001 (pre-established)",
+        "sessionId": "SES-91d3"
+      },
+      {
+        "at": "09:31:02.184",
+        "level": "info",
+        "scope": "agent",
+        "message": "intent=order_status confidence=0.96",
+        "sessionId": "SES-91d3"
+      },
+      {
+        "at": "09:31:02.189",
+        "level": "error",
+        "scope": "policy",
+        "message": "ownership.check order=ORD-204 owner=CUST-002 result=deny",
+        "sessionId": "SES-91d3"
+      },
+      {
+        "at": "09:31:02.190",
+        "level": "warn",
+        "scope": "tool",
+        "message": "get_order skipped reason=ownership_denied",
+        "sessionId": "SES-91d3"
+      },
+      {
+        "at": "09:31:02.881",
+        "level": "info",
+        "scope": "agent",
+        "message": "refusal composed under constraint=must_not_confirm_existence",
+        "sessionId": "SES-91d3"
+      },
+      {
+        "at": "09:31:02.891",
+        "level": "info",
+        "scope": "http",
+        "message": "200 OK in 890ms",
+        "sessionId": "SES-91d3"
+      }
+    ],
+    "lifecycle": "closed",
+    "lastActivityAt": "2026-09-19T09:31:02.890Z"
+  },
+  {
+    "id": "SES-2b60",
+    "customer": "Anna Petrova",
+    "customerId": "CUST-001",
+    "startedAt": "2026-09-19T09:18:44Z",
+    "durationMs": 5420,
+    "summary": "Bought the Travel Mug from the wallet. One item refused on funds.",
+    "outcome": "ok",
+    "turns": [
+      {
+        "id": "t1",
+        "role": "customer",
+        "at": "09:18:44",
+        "text": "Can you add the travel mug and the copper saucepan to my basket and pay for them?"
+      },
+      {
+        "id": "t2",
+        "role": "assistant",
+        "at": "09:18:48",
+        "text": "The Travel Mug is €29.90 and the Copper Saucepan is €89.00, which is €118.90 against a wallet of €50.00. I can cover the Travel Mug on its own. Do you want me to buy just that?"
+      },
+      {
+        "id": "t3",
+        "role": "customer",
+        "at": "09:18:57",
+        "text": "yes just the mug"
+      },
+      {
+        "id": "t4",
+        "role": "assistant",
+        "at": "09:18:59",
+        "text": "Done. Travel Mug, €29.90, order ORD-412. Your wallet is now €20.10."
+      },
+      {
+        "id": "t5",
+        "role": "system",
+        "at": "09:18:59",
+        "text": "Wallet charged €29.90. Balance 50.00 to 20.10."
+      }
+    ],
+    "tree": [
+      {
+        "id": "n1",
+        "kind": "intent",
+        "label": "Classify request",
+        "detail": "purchase, 2 items requested",
+        "status": "ok",
+        "ms": 240,
+        "payload": {
+          "intent": "purchase",
+          "confidence": 0.88,
+          "items_mentioned": [
+            "travel mug",
+            "copper saucepan"
+          ]
+        }
+      },
+      {
+        "id": "n2",
+        "kind": "tool",
+        "label": "find_items",
+        "detail": "Both resolved from the catalog",
+        "status": "ok",
+        "ms": 22,
+        "payload": {
+          "matches": [
+            {
+              "query": "travel mug",
+              "item_id": "ITEM-301",
+              "price": 29.9
+            },
+            {
+              "query": "copper saucepan",
+              "item_id": "ITEM-406",
+              "price": 89
+            }
+          ]
+        }
+      },
+      {
+        "id": "n3",
+        "kind": "tool",
+        "label": "get_wallet",
+        "detail": "€50.00 available",
+        "status": "ok",
+        "ms": 6,
+        "payload": {
+          "customer_id": "CUST-001",
+          "balance": 50,
+          "currency": "EUR"
+        }
+      },
+      {
+        "id": "n4",
+        "kind": "policy",
+        "label": "Sufficient funds",
+        "detail": "€118.90 requested against a €50.00 wallet",
+        "status": "blocked",
+        "ms": 3,
+        "payload": {
+          "requested": 118.9,
+          "available": 50,
+          "shortfall": 68.9,
+          "action": "narrow_to_affordable"
+        },
+        "children": [
+          {
+            "id": "n4a",
+            "kind": "model",
+            "label": "Offer the affordable subset",
+            "detail": "Travel Mug alone fits at €29.90",
+            "status": "ok",
+            "ms": 720,
+            "payload": {
+              "affordable": [
+                "ITEM-301"
+              ],
+              "dropped": [
+                "ITEM-406"
+              ],
+              "note": "Do not silently drop the item. Say which one and why."
+            }
+          }
+        ]
+      },
+      {
+        "id": "n5",
+        "kind": "policy",
+        "label": "Explicit confirmation",
+        "detail": "Customer said \"yes just the mug\"",
+        "status": "ok",
+        "ms": 9130,
+        "payload": {
+          "rule": "no_charge_without_confirmation",
+          "prompt_sent": "09:18:48",
+          "confirmed_at": "09:18:57",
+          "confirmation_text": "yes just the mug"
+        }
+      },
+      {
+        "id": "n6",
+        "kind": "tool",
+        "label": "charge_wallet",
+        "detail": "€29.90 charged, balance €20.10",
+        "status": "ok",
+        "ms": 41,
+        "payload": {
+          "amount": 29.9,
+          "balance_before": 50,
+          "balance_after": 20.1,
+          "idempotency_key": "SES-2b60:ITEM-301:1"
+        }
+      },
+      {
+        "id": "n7",
+        "kind": "outcome",
+        "label": "Order placed",
+        "detail": "ORD-412, one item",
+        "status": "ok",
+        "ms": 30,
+        "payload": {
+          "order_id": "ORD-412",
+          "items": [
+            "ITEM-301"
+          ],
+          "total": 29.9,
+          "funds_moved": true
+        }
+      }
+    ],
+    "logs": [
+      {
+        "at": "09:18:44.002",
+        "level": "info",
+        "scope": "http",
+        "message": "POST /api/assistant/message session=SES-2b60",
+        "sessionId": "SES-2b60"
+      },
+      {
+        "at": "09:18:44.248",
+        "level": "info",
+        "scope": "agent",
+        "message": "intent=purchase items=2",
+        "sessionId": "SES-2b60"
+      },
+      {
+        "at": "09:18:44.270",
+        "level": "debug",
+        "scope": "tool",
+        "message": "find_items matched=2 unmatched=0",
+        "sessionId": "SES-2b60"
+      },
+      {
+        "at": "09:18:44.276",
+        "level": "debug",
+        "scope": "tool",
+        "message": "get_wallet CUST-001 balance=50.00",
+        "sessionId": "SES-2b60"
+      },
+      {
+        "at": "09:18:44.279",
+        "level": "warn",
+        "scope": "policy",
+        "message": "funds.check requested=118.90 available=50.00 result=deny",
+        "sessionId": "SES-2b60"
+      },
+      {
+        "at": "09:18:44.999",
+        "level": "info",
+        "scope": "agent",
+        "message": "narrowed basket to affordable subset [ITEM-301]",
+        "sessionId": "SES-2b60"
+      },
+      {
+        "at": "09:18:48.110",
+        "level": "info",
+        "scope": "agent",
+        "message": "awaiting confirmation before charge",
+        "sessionId": "SES-2b60"
+      },
+      {
+        "at": "09:18:57.240",
+        "level": "info",
+        "scope": "policy",
+        "message": "confirmation received, charge unblocked",
+        "sessionId": "SES-2b60"
+      },
+      {
+        "at": "09:18:58.900",
+        "level": "info",
+        "scope": "wallet",
+        "message": "charge amount=29.90 before=50.00 after=20.10 key=SES-2b60:ITEM-301:1",
+        "sessionId": "SES-2b60"
+      },
+      {
+        "at": "09:18:58.941",
+        "level": "info",
+        "scope": "order",
+        "message": "ORD-412 created items=1 total=29.90",
+        "sessionId": "SES-2b60"
+      },
+      {
+        "at": "09:18:59.422",
+        "level": "info",
+        "scope": "http",
+        "message": "200 OK in 5420ms",
+        "sessionId": "SES-2b60"
+      }
+    ],
+    "lifecycle": "closed",
+    "lastActivityAt": "2026-09-19T09:18:49.420Z"
+  },
+  {
+    "id": "SES-4f2a",
+    "customer": "Anna Petrova",
+    "customerId": "CUST-001",
+    "startedAt": "2026-09-19T08:57:20Z",
+    "durationMs": 1240,
+    "summary": "Tracking lookup for ORD-100. Answered, no action taken.",
+    "outcome": "ok",
+    "turns": [
+      {
+        "id": "t1",
+        "role": "customer",
+        "at": "08:57:20",
+        "text": "Where is order ORD-100?"
+      },
+      {
+        "id": "t2",
+        "role": "assistant",
+        "at": "08:57:21",
+        "text": "ORD-100 is in transit with DHL under DHL-ORD100-TEST. It cleared the Leipzig hub this morning and is due Thursday. That is the Ceramic Dinner Set, €64.80."
+      }
+    ],
+    "tree": [
+      {
+        "id": "n1",
+        "kind": "intent",
+        "label": "Classify request",
+        "detail": "order_status, confidence 0.94",
+        "status": "ok",
+        "ms": 160,
+        "payload": {
+          "candidates": [
+            {
+              "intent": "order_status",
+              "confidence": 0.94
+            }
+          ]
+        }
+      },
+      {
+        "id": "n2",
+        "kind": "policy",
+        "label": "Order ownership",
+        "detail": "ORD-100 belongs to CUST-001",
+        "status": "ok",
+        "ms": 4,
+        "payload": {
+          "order_id": "ORD-100",
+          "owner": "CUST-001",
+          "authenticated_as": "CUST-001",
+          "match": true
+        }
+      },
+      {
+        "id": "n3",
+        "kind": "tool",
+        "label": "get_order",
+        "detail": "in_transit, €64.80",
+        "status": "ok",
+        "ms": 31,
+        "payload": {
+          "request": {
+            "order_id": "ORD-100"
+          },
+          "response": {
+            "status": "in_transit",
+            "total": 64.8,
+            "carrier": "DHL",
+            "tracking_number": "DHL-ORD100-TEST"
+          }
+        }
+      },
+      {
+        "id": "n4",
+        "kind": "tool",
+        "label": "get_tracking",
+        "detail": "Left Leipzig hub, due Thursday",
+        "status": "ok",
+        "ms": 210,
+        "payload": {
+          "tracking_number": "DHL-ORD100-TEST",
+          "last_scan": "Leipzig hub, 06:12",
+          "estimated_delivery": "2026-09-24"
+        }
+      },
+      {
+        "id": "n5",
+        "kind": "outcome",
+        "label": "Answered",
+        "detail": "Read-only, nothing changed",
+        "status": "ok",
+        "ms": 12,
+        "payload": {
+          "writes": 0,
+          "funds_moved": false
+        }
+      }
+    ],
+    "logs": [
+      {
+        "at": "08:57:20.001",
+        "level": "info",
+        "scope": "http",
+        "message": "POST /api/assistant/message session=SES-4f2a",
+        "sessionId": "SES-4f2a"
+      },
+      {
+        "at": "08:57:20.165",
+        "level": "info",
+        "scope": "agent",
+        "message": "intent=order_status confidence=0.94",
+        "sessionId": "SES-4f2a"
+      },
+      {
+        "at": "08:57:20.170",
+        "level": "info",
+        "scope": "policy",
+        "message": "ownership.check order=ORD-100 result=pass",
+        "sessionId": "SES-4f2a"
+      },
+      {
+        "at": "08:57:20.202",
+        "level": "debug",
+        "scope": "tool",
+        "message": "get_order order_id=ORD-100 -> 200 in 31ms",
+        "sessionId": "SES-4f2a"
+      },
+      {
+        "at": "08:57:20.413",
+        "level": "debug",
+        "scope": "tool",
+        "message": "get_tracking DHL-ORD100-TEST -> 200 in 210ms",
+        "sessionId": "SES-4f2a"
+      },
+      {
+        "at": "08:57:21.241",
+        "level": "info",
+        "scope": "http",
+        "message": "200 OK in 1240ms",
+        "sessionId": "SES-4f2a"
+      }
+    ],
+    "lifecycle": "closed",
+    "lastActivityAt": "2026-09-19T08:57:21.240Z"
+  }
+]

@@ -1,0 +1,68 @@
+[
+  {
+    "order_id": "ORD-401",
+    "customer_id": "CUST-001",
+    "status": "packaged",
+    "currency": "EUR",
+    "total": 38.00,
+    "paid": true,
+    "placed_days_ago": 1,
+    "items": [
+      { "item_id": "ITEM-102", "name": "Serving Platter", "quantity": 1, "unit_price": 38.00 }
+    ]
+  },
+  {
+    "order_id": "ORD-402",
+    "customer_id": "CUST-001",
+    "status": "delivered",
+    "currency": "EUR",
+    "total": 44.00,
+    "paid": true,
+    "placed_days_ago": 28,
+    "delivered_days_ago": 24,
+    "items": [
+      { "item_id": "ITEM-404", "name": "Pepper Mill", "quantity": 1, "unit_price": 27.50 },
+      { "item_id": "ITEM-405", "name": "Mixing Bowl", "quantity": 1, "unit_price": 16.20 }
+    ]
+  },
+  {
+    "order_id": "ORD-403",
+    "customer_id": "CUST-001",
+    "status": "cancelled",
+    "currency": "EUR",
+    "total": 89.00,
+    "paid": false,
+    "placed_days_ago": 9,
+    "cancelled_days_ago": 8,
+    "items": [
+      { "item_id": "ITEM-406", "name": "Copper Saucepan", "quantity": 1, "unit_price": 89.00 }
+    ]
+  },
+  {
+    "order_id": "ORD-404",
+    "customer_id": "CUST-001",
+    "status": "in_transit",
+    "currency": "EUR",
+    "total": 27.10,
+    "paid": true,
+    "placed_days_ago": 3,
+    "items": [
+      { "item_id": "ITEM-203", "name": "Tumbler", "quantity": 2, "unit_price": 9.60 },
+      { "item_id": "ITEM-403", "name": "Wooden Spoon", "quantity": 1, "unit_price": 6.90 }
+    ],
+    "shipping": { "carrier": "GLS", "tracking_number": "GLS-ORD404-TEST" }
+  },
+  {
+    "order_id": "ORD-405",
+    "customer_id": "CUST-002",
+    "status": "delivered",
+    "currency": "EUR",
+    "total": 72.00,
+    "paid": true,
+    "placed_days_ago": 6,
+    "delivered_days_ago": 3,
+    "items": [
+      { "item_id": "ITEM-402", "name": "Chef Knife", "quantity": 1, "unit_price": 72.00 }
+    ]
+  }
+]

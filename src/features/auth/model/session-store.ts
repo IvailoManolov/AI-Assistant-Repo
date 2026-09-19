@@ -5,7 +5,7 @@ import type { Session } from "./types";
  * useSyncExternalStore rather than mirrored into React state inside an effect.
  * The snapshot is cached because the hook compares by reference.
  */
-const STORAGE_KEY = "kiln.session";
+const STORAGE_KEY = "robby.session";
 
 let cachedRaw: string | null = null;
 let cachedSession: Session | null = null;

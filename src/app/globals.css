@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 /* ------------------------------------------------------------------ *
- * Kiln - design tokens
+ * Robby - design tokens
  *
  * One palette across the whole product: warm paper, ink text, coral for
  * action. Status colours (green / amber / red) are only ever applied to
@@ -36,6 +36,13 @@
   --danger: #b83a21;
   --danger-soft: #fbe1da;
   --danger-signal: #e24d34;
+
+  /* Cobalt is the notification blue. A generic UI blue would sit outside this
+     palette; cobalt oxide is the glaze blue a kiln actually produces, so it
+     belongs to the shop rather than to the framework. */
+  --cobalt: #1f5f8b;
+  --cobalt-soft: #e3eef6;
+  --cobalt-signal: #2f82bf;
 }
 
 @theme inline {
@@ -63,6 +70,9 @@
   --color-danger: var(--danger);
   --color-danger-soft: var(--danger-soft);
   --color-danger-signal: var(--danger-signal);
+  --color-cobalt: var(--cobalt);
+  --color-cobalt-soft: var(--cobalt-soft);
+  --color-cobalt-signal: var(--cobalt-signal);
 
   --font-display: var(--font-display);
   --font-sans: var(--font-sans);
@@ -116,7 +126,13 @@ body {
     0 18px 40px -12px rgba(36, 31, 24, 0.14);
 }
 
-:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+/*
+ * A focus ring belongs on something you operate. A dialog is a container you
+ * are moved into, and it takes focus only so that Escape and the tab order
+ * start in the right place, so it is excluded: ringing the whole panel reads
+ * as an error state rather than as "you are here".
+ */
+:where(a, button, input, select, textarea, [tabindex]):not([role="dialog"]):focus-visible {
   outline: 2px solid var(--coral);
   outline-offset: 2px;
   border-radius: 4px;
@@ -142,6 +158,123 @@ body {
 
 .node-in {
   animation: node-in 0.34s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Unattended work breathes.
+   Scale alone cannot carry this: 5% of a 10px dot is a sub-pixel move that
+   nobody sees. The halo does the work at that size and the scale does it on
+   the wider counted badges, so one animation reads at both sizes. */
+@keyframes breathe {
+  0%,
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 var(--pulse, transparent);
+  }
+  50% {
+    transform: scale(1.08);
+    box-shadow: 0 0 0 5px var(--pulse-out, transparent);
+  }
+}
+
+.breathe {
+  animation: breathe 2s ease-in-out infinite;
+}
+
+/* The halo is the badge's own colour, so the tone carries through it. */
+.pulse-info {
+  --pulse: rgba(31, 95, 139, 0.55);
+  --pulse-out: rgba(31, 95, 139, 0);
+}
+
+.pulse-attention {
+  --pulse: rgba(150, 101, 10, 0.55);
+  --pulse-out: rgba(150, 101, 10, 0);
+}
+
+.pulse-alert {
+  --pulse: rgba(184, 58, 33, 0.55);
+  --pulse-out: rgba(184, 58, 33, 0);
+}
+
+/* A reply being composed. Opacity rather than scale, because these dots are
+   smaller again and the movement has to read as typing, not as a pulse. */
+@keyframes typing {
+  0%,
+  100% {
+    opacity: 0.25;
+    transform: translateY(0);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(-2px);
+  }
+}
+
+.typing-dot {
+  animation: typing 1.1s ease-in-out infinite;
+}
+
+/* Switching sessions swaps the whole pane. The movement is short and small:
+   it exists to show that the contents changed, not to be noticed. */
+@keyframes pane-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.pane-in {
+  animation: pane-in 0.22s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* ------------------------------------------------------------------ *
+ * The landing page's one scroll-driven sequence.
+ *
+ * Sections arrive as they are reached, and the pipeline's spine fills as
+ * the reader moves down it. Both are opacity and a few pixels of travel:
+ * the page is explaining an order of operations, so the motion follows
+ * reading order rather than decorating the edges of it.
+ * ------------------------------------------------------------------ */
+.reveal {
+  opacity: 0;
+  translate: 0 14px;
+  transition:
+    opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    translate 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.reveal.is-in {
+  opacity: 1;
+  translate: 0 0;
+}
+
+/* The spine. Its fill is set from JavaScript as a percentage. */
+.spine-fill {
+  transition: height 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* A pipeline stage that the reader has not reached yet. */
+.stage {
+  transition:
+    opacity 0.45s ease,
+    translate 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  opacity: 0.38;
+}
+
+.stage.is-active {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal,
+  .stage {
+    opacity: 1;
+    translate: none;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

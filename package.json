@@ -9,8 +9,10 @@
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
     "test": "node scripts/run-tests.mjs",
+    "scenarios": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/scenarios.mjs",
     "verify": "npm run typecheck && npm run lint && npm test",
-    "prepare": "husky"
+    "prepare": "husky",
+    "reset": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/reset-runtime.mjs"
   },
   "dependencies": {
     "lucide-react": "^1.28.0",
