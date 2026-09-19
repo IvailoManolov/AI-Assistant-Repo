@@ -54,11 +54,6 @@ export function LoginForm() {
   return (
     <>
       <h1 className="font-display text-3xl font-bold">Sign in</h1>
-      <p className="mt-2 text-[15px] leading-relaxed text-ink-soft">
-        Pick a side. Both accounts use the password{" "}
-        <code className="font-mono text-[13px] text-ink">{DEMO_PASSWORD}</code>.
-      </p>
-
       <div className="mt-6 grid gap-2.5">
         {ROLES.map((r) => {
           const Icon = r.icon;
@@ -69,9 +64,8 @@ export function LoginForm() {
               type="button"
               onClick={() => pick(r.username)}
               aria-pressed={active}
-              className={`flex items-start gap-3.5 rounded-xl px-4 py-3.5 text-left transition-colors ${
-                active ? "bg-paper ring-2 ring-coral" : "bg-paper/60 ring-1 ring-line hover:bg-paper"
-              }`}
+              className={`flex items-start gap-3.5 rounded-xl px-4 py-3.5 text-left transition-colors ${active ? "bg-paper ring-2 ring-coral" : "bg-paper/60 ring-1 ring-line hover:bg-paper"
+                }`}
             >
               <Icon className="mt-0.5 size-4 shrink-0 text-coral" strokeWidth={2.2} />
               <span className="min-w-0">
