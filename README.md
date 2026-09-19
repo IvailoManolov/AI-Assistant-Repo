@@ -1,4 +1,4 @@
-**#Architecture Proposal**
+## Architecture proposal
 Architecture will be tested throughout https://breakscale.tech/ Breakscale. My favorite source for architecutre load testing.
 
 This is just contrived architecture made to potentially scale. I am using many queries to test just to practice my architectural design.
@@ -12,49 +12,59 @@ A read-heavy, globally distributed service. Traffic from four regional populatio
 <img width="2412" height="1017" alt="image" src="https://github.com/user-attachments/assets/d4998cef-34bc-4fcd-8dd4-b4bb711cac0c" />
 
 
-**#Agent Architecture**
-  POST { authenticated_customer_id, message }
-                    │
-                    ▼
-        ┌───────────────────────┐
-        │   ORCHESTRATOR        │   owns the turn, the budget, the audit log
-        └───────────┬───────────┘
-                    ▼
-        ┌───────────────────────┐
-        │   TRIAGE AGENT        │   model call #1
-        │   tools: none         │   out: { intent, order_refs[], specialist }
-        └───────────┬───────────┘
-                    │  routes to exactly ONE specialist
-         ┌──────────┴───────────┐
-         ▼                      ▼
- ┌────────────────┐    ┌──────────────────┐
- │  ORDER AGENT   │    │  REFUND AGENT    │
- │  READ ONLY     │    │  READ + PROPOSE  │
- │  ┌──────────┐  │    │  ┌────────────┐  │
- │  │get_order │  │    │  │get_order   │  │
- │  │get_ship  │  │    │  │propose_ref │  │
- │  └──────────┘  │    │  └────────────┘  │
- └────────┬───────┘    └────────┬─────────┘
-          │   proposals only    │
-          └──────────┬──────────┘
-                     ▼
-    ╔═════════════════════════════════════╗
-    ║        POLICY KERNEL                ║   ← 100% deterministic, zero LLM
-    ║  1. schema validate  (reject malformed)
-    ║  2. AUTHORIZE        (ownership)    ║   ← D1  scenario-03
-    ║  3. POLICY           (eligibility)  ║   ← D4
-    ║  4. DERIVE AMOUNT    (ground truth) ║   ← D2, D3  scenario-02/04
-    ║  5. IDEMPOTENCY      (dedupe key)   ║   ← D5
-    ║  6. EXECUTE + AUDIT                 ║
-    ╚══════════════════╤══════════════════╝
-                       ▼
-        ┌───────────────────────┐
-        │  RESPONSE COMPOSER    │   model call #N: facts → customer reply
-        │  tools: none          │   input is ONLY kernel-verified facts
-        └───────────┬───────────┘
-                    ▼
-      { reply, actions[], audit[], decisions[] }
-      
+## Agent architecture
+
+Four agents and a deterministic kernel. The agents may only *propose*; the
+kernel is the only code that may act.
+
+```
+POST /support   { authenticated_customer_id, message }
+                                     ▼
+                       ┌───────────────────────────┐
+                       │        ORCHESTRATOR       │  owns the turn, the budget,
+                       │                           │  and the audit log
+                       └─────────────┬─────────────┘
+                                     ▼
+                       ┌───────────────────────────┐
+                       │        TRIAGE AGENT       │  model call #1
+                       │        tools: none        │  → { intent, order_refs[],
+                       │                           │      claims[], specialist }
+                       └─────────────┬─────────────┘
+                                     │  routes to exactly ONE specialist
+                          ┌──────────┴───────────┐
+                          ▼                      ▼
+                ┌───────────────────┐  ┌───────────────────┐
+                │    ORDER AGENT    │  │    REFUND AGENT   │
+                │     read only     │  │   read + propose  │
+                ├───────────────────┤  ├───────────────────┤
+                │  get_order        │  │  get_order        │
+                │  get_shipping     │  │  propose_refund   │
+                └─────────┬─────────┘  └─────────┬─────────┘
+                          │    proposals only    │
+                          └──────────┬───────────┘
+                                     ▼
+╔═════════════════════════════════════════════════════════════════════════╗
+║  POLICY KERNEL                       deterministic · no model involved  ║
+╠═════════════════════════════════════════════════════════════════════════╣
+║  1. SCHEMA VALIDATE   reject malformed tool calls                       ║
+║  2. AUTHORIZE         ownership filter on retrieval       ← scenario 03 ║
+║  3. CHECK CONTESTED   claim vs record → escalate          ← scenario 04 ║
+║  4. CHECK ELIGIBILITY order state / return state                        ║
+║  5. DERIVE AMOUNT     unit_price × qty, from record       ← scenario 02 ║
+║  6. CHECK ENVELOPE    ≤ EUR 50 auto, above escalates                    ║
+║  7. CHECK IDEMPOTENCY dedupe on (order_id, item_id)                     ║
+║  8. EXECUTE + AUDIT   the only code that may write                      ║
+╚════════════════════════════════════╦════════════════════════════════════╝
+                                     ▼
+                       ┌───────────────────────────┐
+                       │     RESPONSE COMPOSER     │  model call #N
+                       │        tools: none        │  input: kernel-verified
+                       │                           │  outcomes ONLY
+                       └─────────────┬─────────────┘
+                                     ▼
+  { reply, outcome, actions[], audit[], tier }
+```
+
 # Robby
 
 An AI customer-support assistant for a small homeware shop, and the operator
@@ -67,10 +77,38 @@ policy kernel sits between what he proposes and what actually happens.
 
 Built for the Senior Engineer (AI Systems) take-home exercise.
 
+## Walkthrough
+
+<!-- Upload Walkthrough.mp4 to a GitHub issue or the README web editor, then
+     paste the resulting https://github.com/user-attachments/assets/... URL
+     on the line below, replacing this comment and the placeholder. -->
+
+https://github.com/user-attachments/assets/REPLACE-WITH-UPLOADED-VIDEO-URL
+
+Six minutes: the shop, an order question, a refused lookup, a refund held for
+review, and the operator console approving it.
+
 ## Run it
 
+### Before you start
+
+**Node 22.18 or newer.** `npm run test` and `npm run scenarios` load TypeScript
+directly through Node's native type stripping, which older releases do not have.
+On Node 20 they exit with `ERR_UNKNOWN_FILE_EXTENSION`, and the pre-commit hook
+fails with them. `npm run dev` alone is fine from Node 20.9.
+
 ```bash
-npm install
+node -v        # expect v22.18.0 or newer; this was built and tested on v24
+```
+
+Nothing else is needed: no database, no API key, no environment file, no
+services to start. The model is mocked, so there is nothing to pay for and
+nothing to configure.
+
+### Then
+
+```bash
+npm install    # 366 packages, a few seconds
 npm run dev
 ```
 
@@ -80,6 +118,7 @@ Then open http://localhost:3000.
 npm run verify      # typecheck, lint, 143 tests
 npm run scenarios   # the supplied examples end to end, with the full trace
 npm run reset       # clears what the running app generated, leaves the seed alone
+                    # run this before committing: the app writes to data/seed/mutable
 ```
 
 ## Signing in
