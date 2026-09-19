@@ -79,12 +79,14 @@ Built for the Senior Engineer (AI Systems) take-home exercise.
 
 ## Walkthrough
 
-[![Watch the walkthrough](docs/media/walkthrough-poster.png)](docs/media/walkthrough.mp4)
+[![Watch the walkthrough](docs/media/walkthrough-poster.png)](Walkthrough.mp4)
 
-[docs/media/walkthrough.mp4](docs/media/walkthrough.mp4), three and a half
-minutes: the shop, an order question, a lookup refused on ownership, a refund
-drafted and held, and the operator console approving it. Click the image, or
-clone and open the file.
+**[Walkthrough.mp4](Walkthrough.mp4)** sits in the root of the project. Three and
+a half minutes: the shop, an order question, a lookup refused on ownership, a
+refund drafted and held, and the operator console approving it.
+
+GitHub serves committed video as a binary download rather than playing it in the
+page, so open the file after cloning or unzipping.
 
 ## Run it
 
