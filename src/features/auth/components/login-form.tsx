@@ -23,9 +23,6 @@ export function LoginForm() {
   const router = useRouter();
   const { session, signIn } = useAuth();
   const [picked, setPicked] = useState<string | null>(null);
-  const [manual, setManual] = useState(false);
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const cardsRef = useRef<HTMLDivElement>(null);
 
