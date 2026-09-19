@@ -1,0 +1,1398 @@
+=== current mutable state ===
+[
+  {
+    "id": "SES-9001",
+    "customer": "Anna Petrova",
+    "customerId": "CUST-001",
+    "startedAt": "2026-09-19T10:30:00.000Z",
+    "lastActivityAt": "2026-09-19T10:32:00.000Z",
+    "lifecycle": "closed",
+    "durationMs": 120000,
+    "summary": "Five messages, 120 log lines. Scroll containment probe.",
+    "outcome": "hold",
+    "tree": [],
+    "turns": [
+      {
+        "id": "SES-9001-t1",
+        "role": "customer",
+        "at": "10:30:00",
+        "text": "Customer message 1. Padding text to give the bubble some height. Padding text to give the bubble some height. "
+      },
+      {
+        "id": "SES-9001-t2",
+        "role": "assistant",
+        "at": "10:30:01",
+        "text": "Assistant reply 2. Padding text to give the bubble some height. Padding text to give the bubble some height. "
+      },
+      {
+        "id": "SES-9001-t3",
+        "role": "customer",
+        "at": "10:30:02",
+        "text": "Customer message 3. Padding text to give the bubble some height. Padding text to give the bubble some height. "
+      },
+      {
+        "id": "SES-9001-t4",
+        "role": "assistant",
+        "at": "10:30:03",
+        "text": "Assistant reply 4. Padding text to give the bubble some height. Padding text to give the bubble some height. "
+      },
+      {
+        "id": "SES-9001-t5",
+        "role": "customer",
+        "at": "10:30:04",
+        "text": "Customer message 5. Padding text to give the bubble some height. Padding text to give the bubble some height. "
+      }
+    ],
+    "logs": [
+      {
+        "at": "10:30:00",
+        "level": "debug",
+        "scope": "session",
+        "message": "Log line 1 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:01",
+        "level": "debug",
+        "scope": "intake",
+        "message": "Log line 2 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:02",
+        "level": "info",
+        "scope": "reply",
+        "message": "Log line 3 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:03",
+        "level": "info",
+        "scope": "guard",
+        "message": "Log line 4 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:04",
+        "level": "warn",
+        "scope": "kernel",
+        "message": "Log line 5 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:05",
+        "level": "error",
+        "scope": "model",
+        "message": "Log line 6 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:06",
+        "level": "debug",
+        "scope": "session",
+        "message": "Log line 7 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:07",
+        "level": "debug",
+        "scope": "intake",
+        "message": "Log line 8 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:08",
+        "level": "info",
+        "scope": "reply",
+        "message": "Log line 9 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:09",
+        "level": "info",
+        "scope": "guard",
+        "message": "Log line 10 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:10",
+        "level": "warn",
+        "scope": "kernel",
+        "message": "Log line 11 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:11",
+        "level": "error",
+        "scope": "model",
+        "message": "Log line 12 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:12",
+        "level": "debug",
+        "scope": "session",
+        "message": "Log line 13 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:13",
+        "level": "debug",
+        "scope": "intake",
+        "message": "Log line 14 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:14",
+        "level": "info",
+        "scope": "reply",
+        "message": "Log line 15 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:15",
+        "level": "info",
+        "scope": "guard",
+        "message": "Log line 16 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:16",
+        "level": "warn",
+        "scope": "kernel",
+        "message": "Log line 17 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:17",
+        "level": "error",
+        "scope": "model",
+        "message": "Log line 18 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:18",
+        "level": "debug",
+        "scope": "session",
+        "message": "Log line 19 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:19",
+        "level": "debug",
+        "scope": "intake",
+        "message": "Log line 20 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:20",
+        "level": "info",
+        "scope": "reply",
+        "message": "Log line 21 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:21",
+        "level": "info",
+        "scope": "guard",
+        "message": "Log line 22 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:22",
+        "level": "warn",
+        "scope": "kernel",
+        "message": "Log line 23 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:23",
+        "level": "error",
+        "scope": "model",
+        "message": "Log line 24 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:24",
+        "level": "debug",
+        "scope": "session",
+        "message": "Log line 25 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:25",
+        "level": "debug",
+        "scope": "intake",
+        "message": "Log line 26 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:26",
+        "level": "info",
+        "scope": "reply",
+        "message": "Log line 27 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:27",
+        "level": "info",
+        "scope": "guard",
+        "message": "Log line 28 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:28",
+        "level": "warn",
+        "scope": "kernel",
+        "message": "Log line 29 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:29",
+        "level": "error",
+        "scope": "model",
+        "message": "Log line 30 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:30",
+        "level": "debug",
+        "scope": "session",
+        "message": "Log line 31 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:31",
+        "level": "debug",
+        "scope": "intake",
+        "message": "Log line 32 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:32",
+        "level": "info",
+        "scope": "reply",
+        "message": "Log line 33 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:33",
+        "level": "info",
+        "scope": "guard",
+        "message": "Log line 34 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:34",
+        "level": "warn",
+        "scope": "kernel",
+        "message": "Log line 35 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:35",
+        "level": "error",
+        "scope": "model",
+        "message": "Log line 36 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:36",
+        "level": "debug",
+        "scope": "session",
+        "message": "Log line 37 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:37",
+        "level": "debug",
+        "scope": "intake",
+        "message": "Log line 38 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:38",
+        "level": "info",
+        "scope": "reply",
+        "message": "Log line 39 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:39",
+        "level": "info",
+        "scope": "guard",
+        "message": "Log line 40 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:40",
+        "level": "warn",
+        "scope": "kernel",
+        "message": "Log line 41 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:41",
+        "level": "error",
+        "scope": "model",
+        "message": "Log line 42 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:42",
+        "level": "debug",
+        "scope": "session",
+        "message": "Log line 43 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:43",
+        "level": "debug",
+        "scope": "intake",
+        "message": "Log line 44 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:44",
+        "level": "info",
+        "scope": "reply",
+        "message": "Log line 45 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:45",
+        "level": "info",
+        "scope": "guard",
+        "message": "Log line 46 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:46",
+        "level": "warn",
+        "scope": "kernel",
+        "message": "Log line 47 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:47",
+        "level": "error",
+        "scope": "model",
+        "message": "Log line 48 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:48",
+        "level": "debug",
+        "scope": "session",
+        "message": "Log line 49 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:49",
+        "level": "debug",
+        "scope": "intake",
+        "message": "Log line 50 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:50",
+        "level": "info",
+        "scope": "reply",
+        "message": "Log line 51 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:51",
+        "level": "info",
+        "scope": "guard",
+        "message": "Log line 52 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:52",
+        "level": "warn",
+        "scope": "kernel",
+        "message": "Log line 53 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:53",
+        "level": "error",
+        "scope": "model",
+        "message": "Log line 54 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:54",
+        "level": "debug",
+        "scope": "session",
+        "message": "Log line 55 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:55",
+        "level": "debug",
+        "scope": "intake",
+        "message": "Log line 56 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:56",
+        "level": "info",
+        "scope": "reply",
+        "message": "Log line 57 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:57",
+        "level": "info",
+        "scope": "guard",
+        "message": "Log line 58 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:58",
+        "level": "warn",
+        "scope": "kernel",
+        "message": "Log line 59 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:59",
+        "level": "error",
+        "scope": "model",
+        "message": "Log line 60 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:00",
+        "level": "debug",
+        "scope": "session",
+        "message": "Log line 61 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:01",
+        "level": "debug",
+        "scope": "intake",
+        "message": "Log line 62 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:02",
+        "level": "info",
+        "scope": "reply",
+        "message": "Log line 63 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:03",
+        "level": "info",
+        "scope": "guard",
+        "message": "Log line 64 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:04",
+        "level": "warn",
+        "scope": "kernel",
+        "message": "Log line 65 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:05",
+        "level": "error",
+        "scope": "model",
+        "message": "Log line 66 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:06",
+        "level": "debug",
+        "scope": "session",
+        "message": "Log line 67 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:07",
+        "level": "debug",
+        "scope": "intake",
+        "message": "Log line 68 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:08",
+        "level": "info",
+        "scope": "reply",
+        "message": "Log line 69 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:09",
+        "level": "info",
+        "scope": "guard",
+        "message": "Log line 70 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:10",
+        "level": "warn",
+        "scope": "kernel",
+        "message": "Log line 71 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:11",
+        "level": "error",
+        "scope": "model",
+        "message": "Log line 72 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:12",
+        "level": "debug",
+        "scope": "session",
+        "message": "Log line 73 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:13",
+        "level": "debug",
+        "scope": "intake",
+        "message": "Log line 74 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:14",
+        "level": "info",
+        "scope": "reply",
+        "message": "Log line 75 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:15",
+        "level": "info",
+        "scope": "guard",
+        "message": "Log line 76 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:16",
+        "level": "warn",
+        "scope": "kernel",
+        "message": "Log line 77 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:17",
+        "level": "error",
+        "scope": "model",
+        "message": "Log line 78 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:18",
+        "level": "debug",
+        "scope": "session",
+        "message": "Log line 79 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:19",
+        "level": "debug",
+        "scope": "intake",
+        "message": "Log line 80 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:20",
+        "level": "info",
+        "scope": "reply",
+        "message": "Log line 81 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:21",
+        "level": "info",
+        "scope": "guard",
+        "message": "Log line 82 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:22",
+        "level": "warn",
+        "scope": "kernel",
+        "message": "Log line 83 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:23",
+        "level": "error",
+        "scope": "model",
+        "message": "Log line 84 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:24",
+        "level": "debug",
+        "scope": "session",
+        "message": "Log line 85 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:25",
+        "level": "debug",
+        "scope": "intake",
+        "message": "Log line 86 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:26",
+        "level": "info",
+        "scope": "reply",
+        "message": "Log line 87 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:27",
+        "level": "info",
+        "scope": "guard",
+        "message": "Log line 88 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:28",
+        "level": "warn",
+        "scope": "kernel",
+        "message": "Log line 89 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:29",
+        "level": "error",
+        "scope": "model",
+        "message": "Log line 90 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:30",
+        "level": "debug",
+        "scope": "session",
+        "message": "Log line 91 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:31",
+        "level": "debug",
+        "scope": "intake",
+        "message": "Log line 92 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:32",
+        "level": "info",
+        "scope": "reply",
+        "message": "Log line 93 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:33",
+        "level": "info",
+        "scope": "guard",
+        "message": "Log line 94 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:34",
+        "level": "warn",
+        "scope": "kernel",
+        "message": "Log line 95 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:35",
+        "level": "error",
+        "scope": "model",
+        "message": "Log line 96 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:36",
+        "level": "debug",
+        "scope": "session",
+        "message": "Log line 97 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:37",
+        "level": "debug",
+        "scope": "intake",
+        "message": "Log line 98 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:38",
+        "level": "info",
+        "scope": "reply",
+        "message": "Log line 99 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:39",
+        "level": "info",
+        "scope": "guard",
+        "message": "Log line 100 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:40",
+        "level": "warn",
+        "scope": "kernel",
+        "message": "Log line 101 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:41",
+        "level": "error",
+        "scope": "model",
+        "message": "Log line 102 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:42",
+        "level": "debug",
+        "scope": "session",
+        "message": "Log line 103 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:43",
+        "level": "debug",
+        "scope": "intake",
+        "message": "Log line 104 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:44",
+        "level": "info",
+        "scope": "reply",
+        "message": "Log line 105 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:45",
+        "level": "info",
+        "scope": "guard",
+        "message": "Log line 106 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:46",
+        "level": "warn",
+        "scope": "kernel",
+        "message": "Log line 107 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:47",
+        "level": "error",
+        "scope": "model",
+        "message": "Log line 108 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:48",
+        "level": "debug",
+        "scope": "session",
+        "message": "Log line 109 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:49",
+        "level": "debug",
+        "scope": "intake",
+        "message": "Log line 110 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:50",
+        "level": "info",
+        "scope": "reply",
+        "message": "Log line 111 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:51",
+        "level": "info",
+        "scope": "guard",
+        "message": "Log line 112 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:52",
+        "level": "warn",
+        "scope": "kernel",
+        "message": "Log line 113 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:53",
+        "level": "error",
+        "scope": "model",
+        "message": "Log line 114 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:54",
+        "level": "debug",
+        "scope": "session",
+        "message": "Log line 115 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:55",
+        "level": "debug",
+        "scope": "intake",
+        "message": "Log line 116 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:56",
+        "level": "info",
+        "scope": "reply",
+        "message": "Log line 117 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:57",
+        "level": "info",
+        "scope": "guard",
+        "message": "Log line 118 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:58",
+        "level": "warn",
+        "scope": "kernel",
+        "message": "Log line 119 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      },
+      {
+        "at": "10:30:59",
+        "level": "error",
+        "scope": "model",
+        "message": "Log line 120 of 120. Enough text to need the horizontal rule as well as the vertical one.",
+        "sessionId": "SES-9001"
+      }
+    ]
+  },
+  {
+    "id": "SES-8000",
+    "customer": "Anna Petrova",
+    "customerId": "CUST-001",
+    "startedAt": "2026-09-19T10:25:00.000Z",
+    "lastActivityAt": "2026-09-19T10:25:40.000Z",
+    "lifecycle": "closed",
+    "durationMs": 40000,
+    "summary": "Filler session 1 so the rail has more rows than fit on screen.",
+    "outcome": "ok",
+    "tree": [],
+    "turns": [
+      {
+        "id": "SES-8000-t1",
+        "role": "customer",
+        "at": "10:00:00",
+        "text": "Filler question 1."
+      }
+    ],
+    "logs": [
+      {
+        "at": "10:00:00",
+        "level": "info",
+        "scope": "session",
+        "message": "Session opened.",
+        "sessionId": "SES-8000"
+      }
+    ]
+  },
+  {
+    "id": "SES-8001",
+    "customer": "Anna Petrova",
+    "customerId": "CUST-001",
+    "startedAt": "2026-09-19T10:20:00.000Z",
+    "lastActivityAt": "2026-09-19T10:20:40.000Z",
+    "lifecycle": "closed",
+    "durationMs": 40000,
+    "summary": "Filler session 2 so the rail has more rows than fit on screen.",
+    "outcome": "hold",
+    "tree": [],
+    "turns": [
+      {
+        "id": "SES-8001-t1",
+        "role": "customer",
+        "at": "10:00:00",
+        "text": "Filler question 2."
+      }
+    ],
+    "logs": [
+      {
+        "at": "10:00:00",
+        "level": "info",
+        "scope": "session",
+        "message": "Session opened.",
+        "sessionId": "SES-8001"
+      }
+    ]
+  },
+  {
+    "id": "SES-8002",
+    "customer": "Anna Petrova",
+    "customerId": "CUST-001",
+    "startedAt": "2026-09-19T10:15:00.000Z",
+    "lastActivityAt": "2026-09-19T10:15:40.000Z",
+    "lifecycle": "closed",
+    "durationMs": 40000,
+    "summary": "Filler session 3 so the rail has more rows than fit on screen.",
+    "outcome": "blocked",
+    "tree": [],
+    "turns": [
+      {
+        "id": "SES-8002-t1",
+        "role": "customer",
+        "at": "10:00:00",
+        "text": "Filler question 3."
+      }
+    ],
+    "logs": [
+      {
+        "at": "10:00:00",
+        "level": "info",
+        "scope": "session",
+        "message": "Session opened.",
+        "sessionId": "SES-8002"
+      }
+    ]
+  },
+  {
+    "id": "SES-8003",
+    "customer": "Anna Petrova",
+    "customerId": "CUST-001",
+    "startedAt": "2026-09-19T10:10:00.000Z",
+    "lastActivityAt": "2026-09-19T10:10:40.000Z",
+    "lifecycle": "closed",
+    "durationMs": 40000,
+    "summary": "Filler session 4 so the rail has more rows than fit on screen.",
+    "outcome": "info",
+    "tree": [],
+    "turns": [
+      {
+        "id": "SES-8003-t1",
+        "role": "customer",
+        "at": "10:00:00",
+        "text": "Filler question 4."
+      }
+    ],
+    "logs": [
+      {
+        "at": "10:00:00",
+        "level": "info",
+        "scope": "session",
+        "message": "Session opened.",
+        "sessionId": "SES-8003"
+      }
+    ]
+  },
+  {
+    "id": "SES-8004",
+    "customer": "Anna Petrova",
+    "customerId": "CUST-001",
+    "startedAt": "2026-09-19T10:05:00.000Z",
+    "lastActivityAt": "2026-09-19T10:05:40.000Z",
+    "lifecycle": "closed",
+    "durationMs": 40000,
+    "summary": "Filler session 5 so the rail has more rows than fit on screen.",
+    "outcome": "ok",
+    "tree": [],
+    "turns": [
+      {
+        "id": "SES-8004-t1",
+        "role": "customer",
+        "at": "10:00:00",
+        "text": "Filler question 5."
+      }
+    ],
+    "logs": [
+      {
+        "at": "10:00:00",
+        "level": "info",
+        "scope": "session",
+        "message": "Session opened.",
+        "sessionId": "SES-8004"
+      }
+    ]
+  },
+  {
+    "id": "SES-8005",
+    "customer": "Anna Petrova",
+    "customerId": "CUST-001",
+    "startedAt": "2026-09-19T10:00:00.000Z",
+    "lastActivityAt": "2026-09-19T10:00:40.000Z",
+    "lifecycle": "closed",
+    "durationMs": 40000,
+    "summary": "Filler session 6 so the rail has more rows than fit on screen.",
+    "outcome": "hold",
+    "tree": [],
+    "turns": [
+      {
+        "id": "SES-8005-t1",
+        "role": "customer",
+        "at": "10:00:00",
+        "text": "Filler question 6."
+      }
+    ],
+    "logs": [
+      {
+        "at": "10:00:00",
+        "level": "info",
+        "scope": "session",
+        "message": "Session opened.",
+        "sessionId": "SES-8005"
+      }
+    ]
+  },
+  {
+    "id": "SES-8006",
+    "customer": "Anna Petrova",
+    "customerId": "CUST-001",
+    "startedAt": "2026-09-19T09:55:00.000Z",
+    "lastActivityAt": "2026-09-19T09:55:40.000Z",
+    "lifecycle": "closed",
+    "durationMs": 40000,
+    "summary": "Filler session 7 so the rail has more rows than fit on screen.",
+    "outcome": "blocked",
+    "tree": [],
+    "turns": [
+      {
+        "id": "SES-8006-t1",
+        "role": "customer",
+        "at": "10:00:00",
+        "text": "Filler question 7."
+      }
+    ],
+    "logs": [
+      {
+        "at": "10:00:00",
+        "level": "info",
+        "scope": "session",
+        "message": "Session opened.",
+        "sessionId": "SES-8006"
+      }
+    ]
+  },
+  {
+    "id": "SES-8007",
+    "customer": "Anna Petrova",
+    "customerId": "CUST-001",
+    "startedAt": "2026-09-19T09:50:00.000Z",
+    "lastActivityAt": "2026-09-19T09:50:40.000Z",
+    "lifecycle": "closed",
+    "durationMs": 40000,
+    "summary": "Filler session 8 so the rail has more rows than fit on screen.",
+    "outcome": "info",
+    "tree": [],
+    "turns": [
+      {
+        "id": "SES-8007-t1",
+        "role": "customer",
+        "at": "10:00:00",
+        "text": "Filler question 8."
+      }
+    ],
+    "logs": [
+      {
+        "at": "10:00:00",
+        "level": "info",
+        "scope": "session",
+        "message": "Session opened.",
+        "sessionId": "SES-8007"
+      }
+    ]
+  },
+  {
+    "id": "SES-8008",
+    "customer": "Anna Petrova",
+    "customerId": "CUST-001",
+    "startedAt": "2026-09-19T09:45:00.000Z",
+    "lastActivityAt": "2026-09-19T09:45:40.000Z",
+    "lifecycle": "closed",
+    "durationMs": 40000,
+    "summary": "Filler session 9 so the rail has more rows than fit on screen.",
+    "outcome": "ok",
+    "tree": [],
+    "turns": [
+      {
+        "id": "SES-8008-t1",
+        "role": "customer",
+        "at": "10:00:00",
+        "text": "Filler question 9."
+      }
+    ],
+    "logs": [
+      {
+        "at": "10:00:00",
+        "level": "info",
+        "scope": "session",
+        "message": "Session opened.",
+        "sessionId": "SES-8008"
+      }
+    ]
+  },
+  {
+    "id": "SES-8009",
+    "customer": "Anna Petrova",
+    "customerId": "CUST-001",
+    "startedAt": "2026-09-19T09:40:00.000Z",
+    "lastActivityAt": "2026-09-19T09:40:40.000Z",
+    "lifecycle": "closed",
+    "durationMs": 40000,
+    "summary": "Filler session 10 so the rail has more rows than fit on screen.",
+    "outcome": "hold",
+    "tree": [],
+    "turns": [
+      {
+        "id": "SES-8009-t1",
+        "role": "customer",
+        "at": "10:00:00",
+        "text": "Filler question 10."
+      }
+    ],
+    "logs": [
+      {
+        "at": "10:00:00",
+        "level": "info",
+        "scope": "session",
+        "message": "Session opened.",
+        "sessionId": "SES-8009"
+      }
+    ]
+  },
+  {
+    "id": "SES-8010",
+    "customer": "Anna Petrova",
+    "customerId": "CUST-001",
+    "startedAt": "2026-09-19T09:35:00.000Z",
+    "lastActivityAt": "2026-09-19T09:35:40.000Z",
+    "lifecycle": "closed",
+    "durationMs": 40000,
+    "summary": "Filler session 11 so the rail has more rows than fit on screen.",
+    "outcome": "blocked",
+    "tree": [],
+    "turns": [
+      {
+        "id": "SES-8010-t1",
+        "role": "customer",
+        "at": "10:00:00",
+        "text": "Filler question 11."
+      }
+    ],
+    "logs": [
+      {
+        "at": "10:00:00",
+        "level": "info",
+        "scope": "session",
+        "message": "Session opened.",
+        "sessionId": "SES-8010"
+      }
+    ]
+  },
+  {
+    "id": "SES-8011",
+    "customer": "Anna Petrova",
+    "customerId": "CUST-001",
+    "startedAt": "2026-09-19T09:30:00.000Z",
+    "lastActivityAt": "2026-09-19T09:30:40.000Z",
+    "lifecycle": "closed",
+    "durationMs": 40000,
+    "summary": "Filler session 12 so the rail has more rows than fit on screen.",
+    "outcome": "info",
+    "tree": [],
+    "turns": [
+      {
+        "id": "SES-8011-t1",
+        "role": "customer",
+        "at": "10:00:00",
+        "text": "Filler question 12."
+      }
+    ],
+    "logs": [
+      {
+        "at": "10:00:00",
+        "level": "info",
+        "scope": "session",
+        "message": "Session opened.",
+        "sessionId": "SES-8011"
+      }
+    ]
+  },
+  {
+    "id": "SES-8012",
+    "customer": "Anna Petrova",
+    "customerId": "CUST-001",
+    "startedAt": "2026-09-19T09:25:00.000Z",
+    "lastActivityAt": "2026-09-19T09:25:40.000Z",
+    "lifecycle": "closed",
+    "durationMs": 40000,
+    "summary": "Filler session 13 so the rail has more rows than fit on screen.",
+    "outcome": "ok",
+    "tree": [],
+    "turns": [
+      {
+        "id": "SES-8012-t1",
+        "role": "customer",
+        "at": "10:00:00",
+        "text": "Filler question 13."
+      }
+    ],
+    "logs": [
+      {
+        "at": "10:00:00",
+        "level": "info",
+        "scope": "session",
+        "message": "Session opened.",
+        "sessionId": "SES-8012"
+      }
+    ]
+  },
+  {
+    "id": "SES-8013",
+    "customer": "Anna Petrova",
+    "customerId": "CUST-001",
+    "startedAt": "2026-09-19T09:20:00.000Z",
+    "lastActivityAt": "2026-09-19T09:20:40.000Z",
+    "lifecycle": "closed",
+    "durationMs": 40000,
+    "summary": "Filler session 14 so the rail has more rows than fit on screen.",
+    "outcome": "hold",
+    "tree": [],
+    "turns": [
+      {
+        "id": "SES-8013-t1",
+        "role": "customer",
+        "at": "10:00:00",
+        "text": "Filler question 14."
+      }
+    ],
+    "logs": [
+      {
+        "at": "10:00:00",
+        "level": "info",
+        "scope": "session",
+        "message": "Session opened.",
+        "sessionId": "SES-8013"
+      }
+    ]
+  },
+  {
+    "id": "SES-b244",
+    "customer": "Anna Petrova",
+    "customerId": "CUST-001",
+    "startedAt": "2026-09-19T10:39:43.716Z",
+    "lastActivityAt": "2026-09-19T10:42:22.250Z",
+    "lifecycle": "active",
+    "durationMs": 0,
+    "summary": "123123",
+    "outcome": "info",
+    "turns": [
+      {
+        "id": "SES-b244-t1",
+        "role": "customer",
+        "at": "10:39:43",
+        "text": "123123"
+      },
+      {
+        "id": "SES-b244-t2",
+        "role": "assistant",
+        "at": "10:39:44",
+        "text": "The assistant runtime is not connected yet, so I cannot answer that. Your message is recorded against this session, and the operator console is showing it now."
+      },
+      {
+        "id": "SES-b244-t3",
+        "role": "customer",
+        "at": "10:39:54",
+        "text": "I really want to learn"
+      },
+      {
+        "id": "SES-b244-t4",
+        "role": "assistant",
+        "at": "10:39:56",
+        "text": "The assistant runtime is not connected yet, so I cannot answer that. Your message is recorded against this session, and the operator console is showing it now."
+      },
+      {
+        "id": "SES-b244-t5",
+        "role": "customer",
+        "at": "10:42:21",
+        "text": "Hello"
+      },
+      {
+        "id": "SES-b244-t6",
+        "role": "assistant",
+        "at": "10:42:22",
+        "text": "The assistant runtime is not connected yet, so I cannot answer that. Your message is recorded against this session, and the operator console is showing it now."
+      }
+    ],
+    "tree": [],
+    "logs": [
+      {
+        "at": "10:39:43",
+        "level": "info",
+        "scope": "session",
+        "message": "Session opened for CUST-001.",
+        "sessionId": "SES-b244"
+      },
+      {
+        "at": "10:39:43",
+        "level": "info",
+        "scope": "intake",
+        "message": "Message received (6 chars).",
+        "sessionId": "SES-b244"
+      },
+      {
+        "at": "10:39:44",
+        "level": "debug",
+        "scope": "reply",
+        "message": "No agent pipeline connected. Drafted the standing reply.",
+        "sessionId": "SES-b244"
+      },
+      {
+        "at": "10:39:54",
+        "level": "info",
+        "scope": "intake",
+        "message": "Message received (22 chars).",
+        "sessionId": "SES-b244"
+      },
+      {
+        "at": "10:39:56",
+        "level": "debug",
+        "scope": "reply",
+        "message": "No agent pipeline connected. Drafted the standing reply.",
+        "sessionId": "SES-b244"
+      },
+      {
+        "at": "10:42:21",
+        "level": "info",
+        "scope": "intake",
+        "message": "Message received (5 chars).",
+        "sessionId": "SES-b244"
+      },
+      {
+        "at": "10:42:22",
+        "level": "debug",
+        "scope": "reply",
+        "message": "No agent pipeline connected. Drafted the standing reply.",
+        "sessionId": "SES-b244"
+      }
+    ]
+  }
+]
+shared barrel updated
+ok
