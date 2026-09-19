@@ -1,3 +1,60 @@
+**#Architecture Proposal**
+Architecture will be tested throughout https://breakscale.tech/ Breakscale. My favorite source for architecutre load testing.
+
+This is just contrived architecture made to potentially scale. I am using many queries to test just to practice my architectural design.
+
+A read-heavy, globally distributed service. Traffic from four regional populations (two Canada, two Europe) reaches a pair of CDNs. It redirects to the lb in your area. The origin consults a 4-way sharded store and delegates work to an AI agent, which is the sole consumer of the data layer: a cache, a search index, and a database.
+
+100Requests / 1Sec.
+<img width="2362" height="886" alt="image" src="https://github.com/user-attachments/assets/8194d446-8367-4836-b576-68d744a48cdd" />
+
+5000 Requests / 1Sec.
+<img width="2412" height="1017" alt="image" src="https://github.com/user-attachments/assets/d4998cef-34bc-4fcd-8dd4-b4bb711cac0c" />
+
+
+**#Agent Architecture**
+  POST { authenticated_customer_id, message }
+                    │
+                    ▼
+        ┌───────────────────────┐
+        │   ORCHESTRATOR        │   owns the turn, the budget, the audit log
+        └───────────┬───────────┘
+                    ▼
+        ┌───────────────────────┐
+        │   TRIAGE AGENT        │   model call #1
+        │   tools: none         │   out: { intent, order_refs[], specialist }
+        └───────────┬───────────┘
+                    │  routes to exactly ONE specialist
+         ┌──────────┴───────────┐
+         ▼                      ▼
+ ┌────────────────┐    ┌──────────────────┐
+ │  ORDER AGENT   │    │  REFUND AGENT    │
+ │  READ ONLY     │    │  READ + PROPOSE  │
+ │  ┌──────────┐  │    │  ┌────────────┐  │
+ │  │get_order │  │    │  │get_order   │  │
+ │  │get_ship  │  │    │  │propose_ref │  │
+ │  └──────────┘  │    │  └────────────┘  │
+ └────────┬───────┘    └────────┬─────────┘
+          │   proposals only    │
+          └──────────┬──────────┘
+                     ▼
+    ╔═════════════════════════════════════╗
+    ║        POLICY KERNEL                ║   ← 100% deterministic, zero LLM
+    ║  1. schema validate  (reject malformed)
+    ║  2. AUTHORIZE        (ownership)    ║   ← D1  scenario-03
+    ║  3. POLICY           (eligibility)  ║   ← D4
+    ║  4. DERIVE AMOUNT    (ground truth) ║   ← D2, D3  scenario-02/04
+    ║  5. IDEMPOTENCY      (dedupe key)   ║   ← D5
+    ║  6. EXECUTE + AUDIT                 ║
+    ╚══════════════════╤══════════════════╝
+                       ▼
+        ┌───────────────────────┐
+        │  RESPONSE COMPOSER    │   model call #N: facts → customer reply
+        │  tools: none          │   input is ONLY kernel-verified facts
+        └───────────┬───────────┘
+                    ▼
+      { reply, actions[], audit[], decisions[] }
+      
 # Kiln
 
 A homeware shop with an AI assistant sitting on the customer's wallet, and an
