@@ -4,14 +4,14 @@ import type { AgentSession } from "../model/types";
 
 export function Transcript({ session }: { session: AgentSession }) {
   return (
-    <div className="thin-scroll h-full overflow-y-auto px-4 py-4 sm:px-5">
-      <div className="mb-4">
+    <div className="flex h-full min-h-0 flex-col">
+      <div className="shrink-0 px-4 pt-4 pb-3 sm:px-5">
         <h2 className="text-[13px] font-semibold">Transcript</h2>
         <p className="mt-0.5 text-[11px] text-muted">
           {session.customer}, signed in as <span className="font-mono">{session.customerId}</span>
         </p>
       </div>
-      <ol className="space-y-3">
+      <ol className="thin-scroll pane-in min-h-0 grow space-y-3 overflow-y-auto px-4 pb-4 sm:px-5">
         {session.turns.map((turn) => {
           if (turn.role === "system") {
             return (
@@ -35,7 +35,7 @@ export function Transcript({ session }: { session: AgentSession }) {
             >
               <span className="mb-1 flex items-baseline gap-2">
                 <span className="text-[11px] font-semibold text-muted">
-                  {isCustomer ? session.customer : "Assistant"}
+                  {isCustomer ? session.customer : "Robby"}
                 </span>
                 <span className="font-mono text-[10.5px] text-muted tabular-nums">{turn.at}</span>
               </span>

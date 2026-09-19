@@ -4,6 +4,8 @@ export type Session = {
   username: string;
   role: Role;
   displayName: string;
+  /** The already-authenticated customer id. Null for the operator. */
+  customerId: string | null;
   signedInAt: string;
 };
 

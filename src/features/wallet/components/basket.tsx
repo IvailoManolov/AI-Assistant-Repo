@@ -6,21 +6,28 @@ import { eur } from "@/shared";
 import { useWallet } from "../model/wallet-context";
 
 export function Basket() {
-  const { cart, cartTotal, balance, setQuantity, remove, purchase, purchases } = useWallet();
+  const { cart, cartTotal, balance, setQuantity, remove, purchase, purchases, placing } =
+    useWallet();
   const [message, setMessage] = useState<{ tone: "ok" | "error"; text: string } | null>(null);
 
   const after = balance - cartTotal;
   const short = after < 0;
 
-  function onPurchase() {
-    const result = purchase();
+  async function onPurchase() {
+    setMessage(null);
+    const result = await purchase();
     if (!result.ok) {
       setMessage({ tone: "error", text: result.error });
       return;
     }
+    /**
+     * The reference is the server's. It is a real order on a real account, so
+     * the next thing the customer can do is ask the assistant about it by
+     * name.
+     */
     setMessage({
       tone: "ok",
-      text: `Order ${result.purchase.id} placed for ${eur(result.purchase.total)}.`,
+      text: `Order ${result.purchase.id} placed for ${eur(result.purchase.total)}. Ask Robby about it by reference.`,
     });
   }
 
@@ -32,8 +39,8 @@ export function Basket() {
 
       {cart.length === 0 ? (
         <p className="px-4 py-6 text-[13px] leading-relaxed text-muted">
-          Nothing in the basket yet. Add something from the catalog, or ask the
-          assistant to find it for you.
+          Nothing in the basket yet. Add something from the catalog, or ask Robby to find it
+          for you.
         </p>
       ) : (
         <ul className="divide-y divide-line">
@@ -102,11 +109,11 @@ export function Basket() {
 
         <button
           type="button"
-          onClick={onPurchase}
-          disabled={cart.length === 0}
+          onClick={() => void onPurchase()}
+          disabled={cart.length === 0 || placing}
           className="mt-3.5 w-full rounded-full bg-coral px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-coral-deep disabled:cursor-not-allowed disabled:bg-line disabled:text-muted"
         >
-          Purchase
+          {placing ? "Placing" : "Purchase"}
         </button>
 
         {message && (

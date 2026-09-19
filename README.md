@@ -55,14 +55,17 @@ A read-heavy, globally distributed service. Traffic from four regional populatio
                     ▼
       { reply, actions[], audit[], decisions[] }
       
-# Kiln
+# Robby
 
-A homeware shop with an AI assistant sitting on the customer's wallet, and an
-operator console that replays every decision the assistant made.
+An AI customer-support assistant for a small homeware shop, and the operator
+console that replays every decision it made.
 
-This is the UI pass. The shop is real and interactive; the assistant and the
-recorded sessions are static fixtures, so the screens can be judged before the
-runtime exists.
+A customer writes in with an already-authenticated customer id. Robby reads the
+commerce record, answers order questions, and drafts refunds. He never pays
+one: every refund is held for a human operator to approve, and a deterministic
+policy kernel sits between what he proposes and what actually happens.
+
+Built for the Senior Engineer (AI Systems) take-home exercise.
 
 ## Run it
 
@@ -73,79 +76,136 @@ npm run dev
 
 Then open http://localhost:3000.
 
+```bash
+npm run verify      # typecheck, lint, 143 tests
+npm run scenarios   # the supplied examples end to end, with the full trace
+npm run reset       # clears what the running app generated, leaves the seed alone
+```
+
 ## Signing in
 
-There is no database and no account store. Two hardcoded logins switch roles.
+There is no database and no account store. Two accounts switch roles, and the
+sign-in screen offers them as cards rather than as a form pretending to be a
+gate.
 
-| Username | Password   | Lands on           |
-| -------- | ---------- | ------------------ |
-| `User`   | `Test123$` | The shop           |
-| `Admin`  | `Test123$` | The operator console |
+| Account | Password | Lands on | Is |
+| --- | --- | --- | --- |
+| `User` | `Test123$` | `/shop` | Anna Petrova, `CUST-001` |
+| `Admin` | `Test123$` | `/console` | The operator |
 
-The session is kept in `localStorage` and route guards are client-side only.
-That is deliberate for a demo and is not a security boundary.
+The session is kept in `localStorage` and the route guards are client-side.
+That is deliberate for a demo and is not a security boundary. The boundary that
+matters is `src/guard/`, which is server-side and is the only path to customer
+data.
+
+## Two minutes with it
+
+1. Sign in as Anna. Ask **"what is the status of ORD-200?"** The answer opens on
+   the state, the date it arrived, and how much of the refund window is left.
+2. Ask **"ORD-204"**. It exists and belongs to somebody else, so the ownership
+   check refuses it before the lookup runs, and the wording does not confirm the
+   order is real.
+3. Ask for a refund: **"the decanter in ORD-200 arrived cracked, I want a
+   refund"**. The kernel recomputes the amount from the record and holds it.
+4. Buy something from the catalog. The order is placed on the server, appears in
+   **Your orders**, and can be asked about by reference a second later.
+5. Sign out, sign in as the operator, and read the session: transcript, decision
+   tree, server log. Approve or reject the held refund and watch the session
+   close green.
 
 ## What is here
 
-**Landing** (`/`) opens on the product's own output: a live-looking decision
-card for a refund that the assistant held for approval.
+**Landing** (`/`) explains the system, and walks one message through the five
+steps that answer it as you scroll.
 
 **Shop** (`/shop`) is the customer side. A 20 item catalog, a €50 wallet, a
-basket, and a purchase that refuses when the basket is over the balance. Wallet
-and basket live in a React context for the length of the tab, so a reload puts
-the wallet back to €50. The assistant dock is open to typing but answers with a
-fixed placeholder rather than a faked model reply.
+basket, and Robby in the corner. The **Your orders** tab lists everything on the
+account with what it cost, what state it is in, and how long is left to ask for
+a refund. It reads through the same guard Robby reads through, so the two can
+never disagree about what exists.
 
-**Console** (`/console`) is the operator side. Four recorded sessions, each with
-its transcript, its decision tree, and the server log for the same window. Tree
-nodes expand to the machine payload behind each step.
+**Console** (`/console`) is the operator side. **Sessions** carries the
+transcript, the decision tree and the server log for every conversation, and the
+approval panel for anything held. **Orders** carries every order across
+accounts, with the refund window drawn as one mark per day.
 
-The four fixture sessions are deliberately not all happy paths:
+## How a message is answered
 
-- `SES-4f2a` a tracking lookup that changed nothing.
-- `SES-7c19` a refund for one of two wine glasses. The tree shows the €14.90
-  unit refund alongside the line total and order total it rejected, then holds
-  the refund because it is over the auto-approval ceiling.
-- `SES-91d3` a request for an order belonging to a different customer. The
-  ownership check runs before the fetch, `get_order` never executes, and the
-  refusal is worded so it does not confirm the order exists.
-- `SES-2b60` a purchase that cost more than the wallet held, narrowed to the
-  affordable item and charged only after explicit confirmation.
+Four agents and a kernel, in this order:
+
+| Step | Holds | Cannot |
+| --- | --- | --- |
+| **triage** | no tools | look anything up |
+| **order** | read-only tools | name whose account it is reading |
+| **refund** | reads, plus `propose_refund` | pay anything |
+| **kernel** | everything | be talked round |
+| **composer** | no tools, no records | state a figure no decision carried |
+
+Twelve rules (R1 to R12) run in a fixed order between a proposed tool call and
+the code that would carry it out: capability, session and identity binding,
+ownership, record existence, status, quantity, duplicates, currency, the refund
+window, payment, arithmetic, reconciliation against what the customer claimed,
+and the approval ceiling. The ceiling is zero, so nothing this system allows is
+ever automatic. None of the rules live in a prompt.
 
 ## Layout of the code
 
-Organised by feature, not by file type. See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
-for the full map and the rules about crossing feature boundaries.
+`src/` has one direction of dependency:
 
 ```
+guard  <-  core  <-  app / features
+```
+
+```
+src/mock-env/   seed loading, runtime store, the mutable half of the seed
+src/guard/      the only path to customer data; every accessor takes an auth context
+src/core/       model boundary, agents, kernel, refunds, orders, orchestrator, sessions
+src/features/   auth · catalog · wallet · assistant · orders · refunds · sessions · landing
 src/app/        routes, thin
-src/features/   auth · catalog · wallet · assistant · sessions
-src/shared/     cross-feature primitives
 ```
 
-## Design
+Two conventions inside `core` and `guard`: no barrel files, and relative
+imports with the `.ts` extension. The second one looks fussy and is load
+bearing, because it is what lets `node --test` run those files with no bundler
+and no test framework.
 
-Colour, type and the token structure follow
-[inboxed-web](https://github.com/IvailoManolov/inboxed-web): cream and coral,
-Bricolage Grotesque for display, Inter for UI, JetBrains Mono for machine
-content. One palette across both roles. Colour is reserved for status; mono is
-reserved for content a machine produced.
+[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) is the full map.
+[.claude/Design.md](.claude/Design.md) records what the exercise asked for, what
+the seed data implies but never states, and which decisions were revised.
 
-## Pre-commit guard
+## Data
 
-`.husky/pre-commit` runs `npm run verify`, which is typecheck, then lint, then
-tests. `npm install` wires the hook up through husky's `prepare` script.
+`data/seed/immutable/` is source data and is never written to. A test hashes
+every file before and after the suite and fails if a byte moved.
+`data/seed/mutable/` holds what the running product generates, which is sessions
+and purchased orders, and `npm run reset` empties only that.
+[data/seed/README.md](data/seed/README.md) says which files were supplied with
+the exercise and which were written for this project.
 
-There is no test suite yet. `scripts/run-tests.mjs` looks for `*.test.*` and
-`*.spec.*` files and reports honestly rather than passing on an empty run: if it
-finds test files with no runner configured, it fails and says so. Replace that
-branch when a runner is added.
+## Testing
 
-## Not done yet
+Every suite lives under `tests/`, one folder per feature:
 
-- The assistant runtime. The chat composer and every session in the console are
-  static; nothing calls a model.
-- Sessions are not produced by the shop. Shopping in `/shop` does not create a
-  session in `/console`.
-- No server. State is per tab, and signing in does not touch a backend.
-- No tests. The guard is in place and will run them once they exist.
+```
+tests/<feature>/<feature>.test.ts
+```
+
+143 tests on Node's own runner, with Node 24 type stripping, so there is no test
+framework in the dependency tree. The runner walks `tests/` only and fails with
+a list rather than running anything if a `.test.ts` has drifted back into
+`src/`. [docs/TEST-PLAN.md](docs/TEST-PLAN.md) is the checklist to work through
+before committing, including the live chat script.
+
+`.husky/pre-commit` runs `npm run verify`.
+
+## What this is not
+
+- **No money moves.** A settled refund is marked settled and recorded against
+  the operator who decided it. Nothing credits a wallet, and the approval screen
+  says so rather than implying a payout.
+- **The model is a stand-in.** A deterministic mock sits behind an Anthropic
+  Messages API shaped boundary and plays each agent by rule, including one
+  realistic failure that the kernel exists to catch.
+- **Order timelines are synthetic.** The supplied orders carry no timestamps and
+  are treated as immutable, so their dates are generated relative to now. They
+  never quietly expire.

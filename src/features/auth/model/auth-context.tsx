@@ -31,6 +31,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       username: username.trim(),
       role: account.role,
       displayName: account.displayName,
+      customerId: account.customerId,
       signedInAt: new Date().toISOString(),
     });
     return { ok: true };

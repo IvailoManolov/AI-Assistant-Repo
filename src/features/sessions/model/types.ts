@@ -1,46 +1,19 @@
-export type DecisionStatus = "ok" | "hold" | "blocked" | "skipped" | "info";
+/**
+ * The console's view of the session domain. The types themselves live in core
+ * because the store writes them; this module adds the words the operator
+ * reads.
+ */
+import type { DecisionStatus, SessionLifecycle } from "@/core/sessions/types";
 
-export type NodeKind = "intent" | "model" | "tool" | "policy" | "outcome";
-
-export type DecisionNode = {
-  id: string;
-  kind: NodeKind;
-  label: string;
-  detail: string;
-  status: DecisionStatus;
-  ms: number;
-  /** Machine payload, rendered in mono and collapsed by default. */
-  payload?: Record<string, unknown>;
-  children?: DecisionNode[];
-};
-
-export type Turn = {
-  id: string;
-  role: "customer" | "assistant" | "system";
-  at: string;
-  text: string;
-};
-
-export type LogLine = {
-  at: string;
-  level: "debug" | "info" | "warn" | "error";
-  scope: string;
-  message: string;
-};
-
-export type AgentSession = {
-  id: string;
-  customer: string;
-  customerId: string;
-  startedAt: string;
-  durationMs: number;
-  /** One-line answer to "what happened here", for the sessions rail. */
-  summary: string;
-  outcome: DecisionStatus;
-  turns: Turn[];
-  tree: DecisionNode[];
-  logs: LogLine[];
-};
+export type {
+  AgentSession,
+  DecisionNode,
+  DecisionStatus,
+  LogLine,
+  NodeKind,
+  SessionLifecycle,
+  Turn,
+} from "@/core/sessions/types";
 
 export const STATUS_LABEL: Record<DecisionStatus, string> = {
   ok: "Passed",
@@ -60,4 +33,11 @@ export const STATUS_STANDING: Record<DecisionStatus, string> = {
   blocked: "Refused. The assistant stopped before it acted.",
   skipped: "Not run. An earlier step ruled this one out.",
   info: "Noted. No action either way.",
+};
+
+/** The conversation's own standing, which is a different thing from its outcome. */
+export const LIFECYCLE_STANDING: Record<SessionLifecycle, string> = {
+  active: "Live. The customer is in this conversation right now.",
+  closed: "Finished. The conversation ran to an end.",
+  closed_inactive: "Closed by inactivity. Five minutes of silence and nobody picked it up.",
 };

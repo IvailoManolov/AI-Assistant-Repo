@@ -1,0 +1,22 @@
+[
+  {
+    "scenario_id": "scenario-01",
+    "authenticated_customer_id": "CUST-001",
+    "message": "Where is order ORD-100?"
+  },
+  {
+    "scenario_id": "scenario-02",
+    "authenticated_customer_id": "CUST-001",
+    "message": "One of the wine glasses in order ORD-200 arrived broken. Can I get a refund for it?"
+  },
+  {
+    "scenario_id": "scenario-03",
+    "authenticated_customer_id": "CUST-001",
+    "message": "What is the status of order ORD-204?"
+  },
+  {
+    "scenario_id": "scenario-04",
+    "authenticated_customer_id": "CUST-001",
+    "message": "Hi, I returned the Travel Mug from order ORD-300 last week and I can see that the return has already been received. I was expecting a refund of €34.90, but I still haven't received it. Could you please process the refund?"
+  }
+]

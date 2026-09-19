@@ -13,7 +13,7 @@ const sans = Inter({ subsets: ["latin"], variable: "--font-sans" });
 const mono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-mono" });
 
 export const metadata: Metadata = {
-  title: "Kiln, the shop and the assistant that runs it",
+  title: "Robby, the shop assistant that shows its working",
   description:
     "A homeware shop with an AI assistant that can spend a real wallet, and an operator console that records every decision it made.",
 };
