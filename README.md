@@ -248,3 +248,46 @@ before committing, including the live chat script.
 - **Order timelines are synthetic.** The supplied orders carry no timestamps and
   are treated as immutable, so their dates are generated relative to now. They
   never quietly expire.
+
+## What I implemented
+
+Four agents and a deterministic policy kernel. Triage reads the message, an order
+agent reads commerce records, a refund agent drafts a refund, a composer writes
+the reply. The agents only propose. The kernel is the only code that acts.
+
+A shop at `/shop` with a catalog, a basket and the assistant. An operator console
+at `/console` with the transcript, the decision tree, the server log and the
+approval panel for anything held.
+
+Ownership is checked before any lookup runs, so an order belonging to someone
+else is refused without confirming it exists. Refund amounts are recomputed from
+the record, never taken from the customer or the model. Every refund is held for
+a human to approve.
+
+143 tests, and a headless runner that plays the supplied examples with the full
+decision trace.
+
+## Important assumptions
+
+**Every agent would be better with a skill.** A skill would carry the refund
+policy, the tone and the escalation rules instead of prompt text. It is
+deliberately not here, because at this size it adds structure without adding
+behaviour.
+
+**The customer is already authenticated.** The id arrives with the request and is
+trusted. The sign in screen is a demo gate, not a security boundary.
+
+**The record is the truth.** When a customer states an amount and the record
+disagrees, the record wins and the difference is said plainly.
+
+## What I deliberately left incomplete
+
+**There is no database.** Orders and refunds live in memory, seeded from JSON at
+boot and cleared on restart. Nothing checks an actual order or an actual refund
+against a real system of record. What is guaranteed here is how a decision gets
+made, not whether the data behind it is real.
+
+## What I would do next with more time
+
+Add a database, and put a real model behind the boundary so it can check orders
+against that database instead of against a fixture.
