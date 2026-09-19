@@ -1,0 +1,2 @@
+echo "pre-commit: typecheck -> lint -> tests"
+npm run verify
