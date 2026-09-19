@@ -79,14 +79,12 @@ Built for the Senior Engineer (AI Systems) take-home exercise.
 
 ## Walkthrough
 
-<!-- Upload Walkthrough.mp4 to a GitHub issue or the README web editor, then
-     paste the resulting https://github.com/user-attachments/assets/... URL
-     on the line below, replacing this comment and the placeholder. -->
+[![Watch the walkthrough](docs/media/walkthrough-poster.png)](docs/media/walkthrough.mp4)
 
-https://github.com/user-attachments/assets/REPLACE-WITH-UPLOADED-VIDEO-URL
-
-Six minutes: the shop, an order question, a refused lookup, a refund held for
-review, and the operator console approving it.
+[docs/media/walkthrough.mp4](docs/media/walkthrough.mp4), three and a half
+minutes: the shop, an order question, a lookup refused on ownership, a refund
+drafted and held, and the operator console approving it. Click the image, or
+clone and open the file.
 
 ## Run it
 
